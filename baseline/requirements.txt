@@ -1,0 +1,14 @@
+--find-links https://k2-fsa.github.io/sherpa/onnx/cuda.html
+sherpa-onnx==1.13.8+cuda12.cudnn9.onnxruntime1.28.2
+# CUDA 12.8 + cuDNN 9, the builds torch 2.8.0+cu128 pins; server_cpp.sh / server_python.py put them on LD_LIBRARY_PATH
+nvidia-cuda-runtime-cu12==12.8.90
+nvidia-cublas-cu12==12.8.4.1
+nvidia-cudnn-cu12==9.10.2.21
+nvidia-cufft-cu12==11.3.3.83
+nvidia-curand-cu12==10.3.9.90
+numpy==2.2.6
+websockets==17.2
+fastapi==0.120.2
+uvicorn==0.38.0
+pyarrow==26.0.0
+soundfile==0.14.0
