@@ -1,62 +1,56 @@
-# Giai đoạn 2: bản lite
+# Giai đoạn 2: bản lite và tối ưu (18/10/2026)
 
-[Giai đoạn 1](PHASE1.md) đo server C++ gốc của sherpa-onnx. Giai đoạn này làm bản lite, một server Python viết lại theo
-cách của vieneu lite, rồi đo nó với sherpa trên cùng loại máy, cùng client đo, cùng bộ câu.
+Hết [giai đoạn 1](PHASE1.md), baseline là server C++ gốc của sherpa-onnx. Giai đoạn này viết lại server bằng Python theo
+cách của vieneu lite, rồi làm theo thứ tự: đo so với sherpa, tìm chỗ yếu, đọc số đo để hiểu vì sao, sửa, kiểm tra chữ
+không đổi, rồi đo lại.
 
-Lite giữ nguyên hai thứ:
+Model giữ nguyên: đúng ba file ONNX mà sherpa dùng, greedy search theo đúng luật của sherpa. Giao thức websocket và JSON
+trả về cũng giữ nguyên, nên client của sherpa dùng được luôn. Code nằm trong [lite/](lite/), chỉ có Python.
 
-- **Giao thức websocket và JSON trả về của sherpa:** client cũ dùng được nguyên.
-- **File model:** đúng ba file ONNX mà sherpa dùng, không train lại.
+## Kết quả
 
-Code nằm trong [lite/](lite/), chỉ có Python.
-
-## Tóm tắt
+Bản lite cuối so với server C++ gốc của sherpa, model Zipformer gốc tiếng Anh, một RTX 3060 12 GB:
 
 | Kịch bản | Người dùng tối đa (P90 ≤ 1 s), sherpa | Người dùng tối đa (P90 ≤ 1 s), lite | Trần xử lý, sherpa | Trần xử lý, lite |
 |---|---:|---:|---:|---:|
-| Dồn một lúc, câu ~10 s | 24 | **64** | 422 | **711** |
-| Dồn một lúc, câu 1.4–33 s | 16 | **48** | 282 | **394** |
-| Rải đều, câu ~10 s | 128 | **320** | **515** | 352 |
-| Rải đều, câu 1.4–33 s | 64 | **192** | 112 | **264** |
+| Dồn một lúc, câu ~10 s | 24 | **64** | 422 | **825** |
+| Dồn một lúc, câu 1.4–33 s | 16 | **64** | 282 | **552** |
+| Rải đều, câu ~10 s | 128 | **768** | 515 | **916** |
+| Rải đều, câu 1.4–33 s | 64 | **320** | 112 | **394** |
 
-"Dồn một lúc" và "rải đều" là hai cách gửi request khi đo, giải thích ở [mục ngay dưới](#hai-cách-gửi-request-khi-đo).
-"Trần xử lý" là số giây audio server chép ra chữ trong một giây khi đã hết sức.
+"Dồn một lúc" và "rải đều" là hai cách gửi request khi đo, giải thích ở [mục ngay dưới](#cách-đo). "Trần xử lý" là số
+giây audio server chép ra chữ trong một giây khi đã hết sức.
 
-- **Một câu 10 s chạy một mình:** lite trả chữ sau 0.07 s, sherpa 0.13 s.
-- **Độ đúng:** trên GPU, 355/355 câu của lite giống hệt sherpa, WER không đổi ở mọi mức tải.
-- **Lite thắng ở hầu hết mọi chỗ:** độ trễ thấp hơn 2–4 lần, và số người phục vụ được trong mốc 1 s nhiều hơn 2.5–3 lần.
-- **Lite thua ở một chỗ:** khi request rải đều và tải cực cao (từ ~384 người nói cùng lúc với câu ~10 s), lite hết sức
-  trước sherpa. Lý do và cách sửa ở [phần kết quả](#rải-đều-câu-10-s).
-- **Audio dài:** lite cắt thành cửa sổ 30 s rồi ghép lại, không làm sai chữ. WER 2.19% trên file 1–5 phút, so với 2.25%
-  khi chép từng câu riêng.
-- **VRAM:** đã có trần, nhưng chưa phẳng hoàn toàn (xem [mục VRAM](#vram)).
+- **Số người phục vụ được trong mốc 1 s nhiều hơn 2.7–6 lần,** trần xử lý cao hơn 1.8–3.5 lần.
+- **Một câu ~10 s chạy một mình:** 0.135 → 0.076 s.
+- **Chữ không đổi.** Trên GPU, 355/355 câu giống hệt sherpa (bước 2). Lúc có tải, WER không đổi.
+- **Audio dài tới 5 phút:** cắt thành cửa sổ 30 s rồi ghép lại, WER 2.19%, so với 2.25% khi chép từng câu riêng (bước 4).
+- **VRAM giữ được dưới ngưỡng đặt trước,** dù độ dài câu thay đổi liên tục (bước 7).
+- **Không lỗi nào** trong 68,771 request của lần đo cuối.
 
-## Hai cách gửi request khi đo
+Máy đo và cách kiểm tra lại các bảng: [bước 8](#bước-8-bench-cuối-so-với-sherpa).
 
-Cả hai cách đều tăng dần số người dùng N, xem server chịu được tới đâu. Khác nhau ở chỗ **request đến server lúc nào**.
+## Cách đo
 
-### Dồn một lúc
+Đo đúng như giai đoạn 1 (xem [Phương pháp đo](PHASE1.md#phương-pháp-đo)). Cả hai cách gửi request đều tăng dần số người
+dùng N, xem server chịu được tới đâu. Chúng khác nhau ở chỗ **request đến server lúc nào**.
 
-N người **bấm gửi đúng cùng một khoảnh khắc**, mỗi người một câu. Đợi đủ N người nhận chữ thì cả N lại gửi tiếp. Mỗi mức
-chạy 2 lượt khởi động rồi 5 lượt đo.
+**Dồn một lúc.** N người **bấm gửi đúng cùng một khoảnh khắc**, mỗi người một câu. Đợi đủ N người nhận chữ thì cả N lại
+gửi tiếp. Mỗi mức chạy 2 lượt khởi động rồi 5 lượt đo. Thời gian chờ tính từ lúc gửi đến lúc nhận chữ. Giống tình huống
+đỉnh tải đột ngột: nhiều người bấm "chép lời" hay upload file cùng lúc.
 
 ```
 N = 4, mỗi câu 10 s
 
 t = 0 s      người 1, 2, 3, 4 cùng gửi   →  server nhận 4 câu trong cùng một tích tắc
-t ≈ 0.13 s   cả 4 đã nhận chữ             →  lượt sau, lại cùng gửi 4 câu
+t ≈ 0.1 s    cả 4 đã nhận chữ             →  lượt sau, lại cùng gửi 4 câu
 ```
 
-- Thời gian chờ: tính từ lúc gửi đến lúc nhận chữ.
-- Giống tình huống: đỉnh tải đột ngột, nhiều người bấm "chép lời" hay upload file cùng lúc.
-
-### Rải đều
-
-N người **đang nói liên tục**. Mỗi người nói xong một câu thì câu đó được gửi ngay, trong khi người đó nói tiếp câu sau.
-Mỗi người bắt đầu lệch nhau một chút. Vì vậy **request không đến cùng lúc mà rải đều theo thời gian**:
+**Rải đều.** N người **đang nói liên tục**. Mỗi người nói xong một câu thì câu đó được gửi ngay, trong khi người đó nói
+tiếp câu sau. Mỗi người bắt đầu lệch nhau một chút, nên **request không đến cùng lúc mà rải đều theo thời gian**:
 
 ```
-N = 3, mỗi câu 10 s, mỗi người bắt đầu lệch nhau
+N = 3, mỗi câu 10 s
 
 người A   ──── nói câu 1 ────┤gửi  ──── nói câu 2 ────┤gửi  ──── nói câu 3 ────┤gửi
 người B          ──── nói câu 1 ────┤gửi  ──── nói câu 2 ────┤gửi  ────
@@ -64,96 +58,313 @@ người C   ── nói câu 1 ──┤gửi  ──── nói câu 2 ──�
 thời gian 0 s ─────────────────────────── 10 s ─────────────────────────── 20 s ──────────►
 ```
 
-Mỗi người 10 giây mới gửi một câu, nên **số request đến mỗi giây chỉ khoảng N chia độ dài câu**:
+Mỗi người 10 giây mới gửi một câu, nên số request đến mỗi giây chỉ khoảng N chia độ dài câu:
 
 | N người nói cùng lúc | Request đến mỗi giây (câu ~10 s) | Trung bình cứ bao lâu có một request |
 |---:|---:|---:|
 | 128 | 12.8 | 78 ms |
 | 320 | 32 | 31 ms |
-| 512 | 51 | 20 ms |
+| 768 | 77 | 13 ms |
 
-Số trong bảng đo trực tiếp từ client. **N ở đây là số người đang nói cùng lúc (CCU), không phải số request đến cùng một
-khoảnh khắc**: tại một thời điểm bất kỳ, server chỉ đang nhận vài request.
-
-- Thời gian chờ: tính từ lúc câu nói xong đến lúc nhận chữ, gồm cả thời gian xếp hàng. Nếu server không theo kịp, hàng đợi
+- **N là số người đang nói cùng lúc (CCU),** không phải số request đến cùng một khoảnh khắc.
+- **Thời gian chờ** tính từ lúc câu nói xong đến lúc nhận chữ, gồm cả thời gian xếp hàng. Server không theo kịp thì hàng đợi
   dài dần và thời gian chờ tăng không dừng: đó là lúc quá tải.
-- Mỗi mức chạy 60 giây, bỏ 10 giây đầu. Mỗi người chỉ có một câu đang chờ kết quả.
-- Giống tình huống: tổng đài hay voice agent có N cuộc gọi đang diễn ra, VAD cắt lời thành từng câu.
-- Đây là mức tải nặng nhất của kiểu này: người dùng nói liền không nghỉ. Người thật có lúc im lặng, nên tạo ít request hơn.
+- **Mỗi mức** chạy 60 giây, bỏ 10 giây đầu. Mỗi người chỉ có một câu đang chờ kết quả.
+- **Giống tình huống** tổng đài hay voice agent có N cuộc gọi, VAD cắt lời thành từng câu. Người dùng ở đây nói liền
+  không nghỉ, nên đây là mức tải nặng nhất của kiểu này.
 
-## Cách đo
+**Những điểm chung:**
 
 - **Client đo** ([lite/loadtest.py](lite/loadtest.py)) chạy ngay trên máy GPU, chia người dùng cho 8 tiến trình, nói đúng
-  giao thức websocket của sherpa. Cùng một client đo cả hai server, nên khác biệt chỉ nằm ở server. Độ trễ mạng giữa máy
-  mình và máy GPU không lọt vào số nào.
-- **Audio:** LibriSpeech test-clean, câu tiếng Anh đọc thật, bộ test của chính model này.
-
-  | Bộ | Gồm |
-  |---|---|
-  | Câu ~10 s | 55 câu dài 9.75–10.25 s |
-  | Câu 1.4–33 s | 300 câu lấy ngẫu nhiên, độ dài tự nhiên |
-  | Audio dài | 97 file 71–300 s, nối các câu liên tiếp của cùng một chương, chèn 0.3 s im lặng giữa các câu |
-
-- **Mức đạt:** mọi request thành công và P90 thời gian chờ ≤ 1 s. P50/P90 tính trên mọi request của một mức.
-- **Độ đúng:** trước mỗi kịch bản, client chép từng câu một mình để làm mốc; lúc có tải, mọi câu được so với mốc đó và
+  giao thức của sherpa. Cùng một client đo cả hai server.
+- **Audio:** LibriSpeech test-clean. Có 55 câu dài 9.75–10.25 s, 300 câu lấy ngẫu nhiên dài 1.4–33 s, và 97 file dài
+  71–300 s, mỗi file nối các câu liên tiếp của một chương.
+- **Mức đạt:** mọi request thành công và P90 thời gian chờ ≤ 1 s.
+- **Độ đúng:** trước mỗi kịch bản, client chép từng câu một mình để làm mốc. Lúc có tải, mọi câu được so với mốc đó và
   tính WER so với transcript gốc.
-- **Cấu hình:** sherpa dùng mặc định (batch tối đa 5, 3 luồng). Lite tắt tính năng từ chối (`--max-pending-seconds=0`) để
-  hai bên cùng điều kiện.
-- **Ngày đo:** sherpa đo ngày 17/10, lite ngày 18/10, trên hai máy RTX 3060 12 GB khác nhau. Số tuyệt đối chỉ đúng cho máy
-  đã đo; chênh lệch giữa hai bản lớn hơn nhiều so với độ lệch giữa hai máy.
+- **Cấu hình:** sherpa chạy mặc định (batch tối đa 5, 3 luồng). Lite tắt tính năng từ chối (`--max-pending-seconds=0`)
+  để hai bên cùng điều kiện.
 
-## Lite khác sherpa ở đâu
+## Các cờ
+
+Các cờ của `lite/serve.py`. Khi đo, `bench.py` nhận chúng qua `POST /server?...`:
+
+| Cờ | Mặc định | Ý nghĩa |
+|---|---|---|
+| `--num-slots` | 32 | Số cửa sổ được giải mã cùng lúc |
+| `--steps` | 8 | Số bước greedy mỗi tick, ghi chung một CUDA graph |
+| `--cuda-graph` | 1 | `0`: chạy greedy từng lệnh, để so |
+| `--admit-max`, `--admit-max-seconds` | 16, 240 | Một lượt prefill tối đa bao nhiêu cửa sổ, và bao nhiêu giây audio sau khi đệm |
+| `--window-seconds`, `--window-extra` | 30, 2 | Cửa sổ cho audio dài, và phần chồng mỗi bên |
+| `--max-utterance-length` | 300 | Từ chối request dài hơn số giây này |
+| `--max-pending-seconds` | 120 | Từ chối ngay khi lượng audio đang chờ vượt số giây này. `0`: không bao giờ từ chối |
+| `--gpu-mem-gb` | 8 | Giới hạn cứng bộ nhớ GPU của onnxruntime |
+| `--vram-release-gb` | 0 | VRAM của cả GPU vượt số này (GiB) thì onnxruntime trả bộ nhớ trống về CUDA. `0`: không bao giờ |
+
+## Bước 1. Dựng bản lite
+
+Mục tiêu: server Python gọn, cùng giao thức và cùng model với sherpa, nhưng không gom batch tĩnh.
+
+Ở [giai đoạn 1](PHASE1.md#server-sherpa-onnx-xử-lý-một-câu-như-thế-nào), server của sherpa lấy tối đa 5 câu đang chờ, chạy
+encoder rồi greedy cho cả batch, và cả batch xong mới trả. Vòng greedy chạy trên CPU, mỗi bước chép dữ liệu qua lại giữa
+CPU và GPU. Lite đổi các chỗ đó:
 
 | | Sherpa C++ | Lite |
 |---|---|---|
-| Gom batch | Lấy tối đa 5 câu đang chờ, chạy encoder rồi greedy cho cả batch; cả batch xong mới trả | 32 slot cố định. Prefill (fbank + encoder) **một lần cho cả nhóm câu mới vào**, rồi greedy chạy theo bước cho mọi slot. **Câu nào xong là trả ngay**, câu mới vào thế chỗ ở tick sau |
-| Vòng greedy | Chạy trên CPU, mỗi bước chép dữ liệu CPU ↔ GPU | Chạy hẳn trên GPU, 8 bước ghi lại thành một CUDA graph, mỗi tick chỉ một lệnh. 8 bước cho 32 slot mất ~1 ms |
-| Fbank | Trên CPU, trong lúc giữ khóa hàng đợi | Bằng torch trên GPU, cả nhóm một lần. Lệch tối đa 0.0002 so với thư viện sherpa dùng |
-| Audio dài | Đưa nguyên file vào encoder (tối đa 300 s) | Cắt thành cửa sổ 30 s theo cách của icefall, rồi ghép lại |
-| Quá tải | Hàng đợi không giới hạn, chờ mãi | Có thể từ chối ngay (`{"error": "busy"}`); khi đo thì tắt |
+| Gom batch | Tối đa 5 câu, cả batch xong mới trả | 32 slot cố định. Prefill (fbank + encoder) **một lần cho cả nhóm câu mới vào**, rồi greedy chạy từng bước cho mọi slot. **Câu nào xong là trả ngay**, câu mới vào thế chỗ ở tick sau |
+| Vòng greedy | Trên CPU, mỗi bước chép CPU ↔ GPU | Hẳn trên GPU. 8 bước ghi thành một CUDA graph, mỗi tick chỉ một lệnh. 8 bước cho 32 slot mất ~1 ms |
+| Fbank | Trên CPU, trong lúc giữ khóa hàng đợi | Bằng torch trên GPU, cả nhóm một lần |
+| Decoder, joiner | ONNX | Viết lại bằng torch, trọng số đọc từ chính file ONNX |
+| Quá tải | Hàng đợi không giới hạn | Có thể từ chối ngay (`{"error": "busy"}`) |
 
-Đường đi của một câu trong lite ([engine.py](lite/zipformer_lite/engine.py)):
+Mỗi tick của vòng lặp, trên một luồng giữ GPU:
+
+1. **Nạp.** Còn slot trống thì lấy tối đa min(slot trống, 16) câu đang chờ, theo thứ tự đến, như vieneu lite. Chạy fbank và
+   encoder một lần cho cả nhóm, đệm theo câu dài nhất, rồi chép kết quả của từng câu vào slot của nó. Chỉ lượt prefill
+   này có đệm; vòng greedy không có.
+2. **Bước.** 8 bước greedy cho mọi slot cùng lúc, theo luật của sherpa: mỗi frame tối đa một token, `<unk>` tính như
+   blank. Mỗi slot có frame riêng. Slot trống hay đã xong vẫn chạy theo nhưng bị che, nên mỗi bước luôn là cùng một bộ
+   kernel. Nhờ vậy 8 bước ghi được thành một CUDA graph.
+3. **Thu.** Chép về CPU danh sách slot đã xong, trả kết quả và giải phóng slot ngay.
+
+Code: [engine.py](lite/zipformer_lite/engine.py) (slot, vòng lặp), [transducer.py](lite/zipformer_lite/transducer.py)
+(prefill, decoder, joiner, JSON trả về), [fbank.py](lite/zipformer_lite/fbank.py) (fbank kiểu Kaldi bằng torch).
+
+## Bước 2. Kiểm tra chữ không đổi
+
+Mục tiêu: chứng minh lite cho đúng chữ như sherpa trước khi đo tốc độ.
+
+- **Fbank:** lệch tối đa 0.0002 so với kaldi-native-fbank, thư viện sherpa dùng, với cùng các tùy chọn.
+- **Chữ:** [check.py](lite/check.py) gửi cùng lúc một loạt câu vào engine, để có đủ nhóm, đệm, che và slot được dùng lại.
+  Sau đó nó so từng câu với `sherpa_onnx`. Trên GPU, 355/355 câu (55 câu ~10 s và 300 câu lẫn lộn) giống hệt server
+  C++ của sherpa.
+- **Lúc có tải:** ở mọi mức, 99.2–100% câu cho đúng chữ như khi chạy một mình, WER không đổi. Phần nhỏ khác đi là do câu
+  được đệm khác nhau tùy nhóm.
+
+```bash
+pip install kaldi-native-fbank sherpa-onnx
+cd lite && python check.py               # trên GPU
+python check.py --device cpu --per-set 8  # ở đâu cũng chạy được, chậm hơn
+```
+
+## Bước 3. Đo lần đầu, tìm chỗ yếu
+
+Mục tiêu: đo bản lite một luồng so với sherpa ở cả bốn kịch bản.
+
+| Kịch bản | Người dùng tối đa: sherpa / lite một luồng | Trần xử lý: sherpa / lite một luồng |
+|---|---:|---:|
+| Dồn một lúc, câu ~10 s | 24 / 64 | 422 / 711 |
+| Dồn một lúc, câu 1.4–33 s | 16 / 48 | 282 / 394 |
+| Rải đều, câu ~10 s | 128 / 320 | **515 / 352** |
+| Rải đều, câu 1.4–33 s | 64 / 192 | 112 / 264 |
+
+Lite thắng ở mọi chỗ, trừ trần xử lý khi rải đều với câu ~10 s. Ở 384 người nói cùng lúc, P90 của lite nhảy lên 5.3 s,
+trong khi sherpa vẫn chịu được tới 512 người, ở mức P90 1.7 s.
+
+Server ghi lại mỗi lượt prefill gom bao nhiêu câu và chiếm bao nhiêu thời gian:
+
+| Người nói cùng lúc | P90 | Câu mỗi lượt prefill | Phần thời gian luồng GPU dành cho prefill |
+|---:|---:|---:|---:|
+| 128 | 0.22 s | 1.15 | 75% |
+| 256 | 0.44 s | 1.49 | 85% |
+| 320 | 0.69 s | 1.72 | 88% |
+| 384 | 5.32 s | 1.65 | 96% |
+
+Đọc ra:
+
+- **Request đến rải rác,** ở 384 người là cứ ~26 ms một câu. Lite chạy prefill ngay khi có câu, nên mỗi lượt chỉ gom được
+  1–2 câu. Mỗi lượt encoder có chi phí cố định lớn, dù chỉ 1 câu.
+- **Prefill chạy thì greedy phải dừng,** vì cả hai cùng một luồng. Khi gần như tick nào cũng có câu mới, mỗi vòng thành
+  "vài chục ms prefill + 1 ms greedy".
+- **Tính thử:** ~40 vòng mỗi giây × 8 bước = 320 frame mỗi giây cho mỗi slot. Đó là 12.8 s audio mỗi giây (một frame là
+  40 ms), nhân 32 slot thì ≈ 410 giây audio mỗi giây, gần với trần ~350 đo được.
+- **Sherpa thì gom đủ 5 câu mỗi batch khi đông,** và có 3 luồng chạy chồng lên nhau, nên giấu được chi phí cố định.
+
+**Kết luận:** chỗ yếu không phải encoder tính chậm, mà là encoder và greedy phải chờ nhau trên cùng một luồng. Sửa ở
+bước 6.
+
+Số liệu: [lite/results/gpu-20261018/lite-c/](lite/results/gpu-20261018/lite-c/).
+
+## Bước 4. Audio dài: cửa sổ 30 s
+
+Mục tiêu: nhận file tới 300 s mà encoder không bao giờ phải nhìn quá 30 s.
+
+Sherpa đưa nguyên file vào encoder (tối đa 300 s). Encoder nhìn cả file một lúc, nên bộ nhớ tăng theo bình phương độ dài.
+Lite làm theo cách của chính tác giả Zipformer, recipe `long_file_recog` của icefall:
+
+1. Cắt file thành **cửa sổ 30 s, cứ 26 s một cửa sổ**, hai cửa sổ liền nhau chồng 4 s.
+2. Mỗi cửa sổ là một câu bình thường trong slot, prefill chung với các request khác. Một file 5 phút thành 12 cửa sổ chạy
+   song song.
+3. Mỗi cửa sổ chỉ giữ token từ giây thứ 2 tới giây thứ 28 của nó (cửa sổ đầu giữ từ 0, cửa sổ cuối giữ tới hết). Các phần
+   giữ lại nối tiếp nhau, nên chỉ việc nối token theo thứ tự.
+
+| Kiểm tra | Kết quả |
+|---|---|
+| 97 file dài (71–300 s, trung bình 207 s), mỗi file chạy một mình | WER **2.19%**, trả chữ sau 0.40 s |
+| Cùng nội dung đó, chép từng câu một (2,603 câu) | WER **2.25%** |
+
+Cắt cửa sổ không làm sai chữ, thậm chí nhỉnh hơn một chút, vì model được nhìn qua ranh giới giữa các câu.
+
+Nhiều người gửi file dài cùng lúc, bản lite cuối:
+
+| Người dùng | P50 / P90 thời gian chờ | Xử lý | WER |
+|---:|---:|---:|---:|
+| 1 | 0.47 / 0.52 s | 534 s audio/giây | 2.25% |
+| 4 | 0.84 / 1.56 s | 580 s audio/giây | 2.15% |
+| 16 | 2.32 / 4.51 s | 638 s audio/giây | 1.88% |
+| 32 | 4.39 / 8.86 s | 650 s audio/giây | 2.07% |
+
+Ở mức 8 người, 1/16 file cho chữ hơi khác lúc chạy một mình, vì chỗ nối cửa sổ được đệm khác khi chung nhóm; WER không tệ
+đi. Chưa đo sherpa với file dài trên GPU.
+
+Số liệu: [lite-d/](lite/results/gpu-20261018/lite-d/) (chạy một mình), [lite-e/](lite/results/gpu-20261018b/lite-e/) (bảng).
+
+## Bước 5. VRAM có trần
+
+Mục tiêu: VRAM không tăng mãi. Sherpa tăng tới 6.6 GB theo batch lớn nhất từng gặp và không có trần.
+
+VRAM của lite gồm ba phần:
+
+| Phần | Bao nhiêu | Phụ thuộc vào |
+|---|---:|---|
+| CUDA context, trọng số model | ~0.5 GB | Cố định |
+| Torch: 32 slot, CUDA graph, fbank | 680 MB | `--num-slots`, cửa sổ 30 s. Không đổi suốt mọi kịch bản |
+| Encoder, vùng nhớ của onnxruntime | ~6 GB | Lượt prefill lớn nhất: `--admit-max`, `--admit-max-seconds`, cửa sổ 30 s |
+
+Số người dùng không làm VRAM tăng. Đông người chỉ làm các lượt prefill lớn xảy ra thường hơn, không làm chúng lớn hơn giới
+hạn. Lượt prefill lớn nhất được chặn bởi ba thứ: tối đa 16 cửa sổ, tối đa 240 s audio sau khi đệm, mỗi cửa sổ tối đa
+30 s.
+
+**Làm nóng theo "đường biên".** Lúc khởi động, với mỗi số cửa sổ g từ 1 tới 16, lite chạy một nhóm g cửa sổ ở độ dài lớn
+nhất được phép. Mọi lượt prefill gặp sau đó đều không lớn hơn một lượt đã chạy, nên VRAM đạt đỉnh trước khi phục vụ.
+
+**Một lần đi sai:** định đệm mọi nhóm lên vài độ dài cố định, để encoder chỉ gặp vài kích thước. Encoder báo lỗi
+`Where_479: broadcast 506 by 746`, vì file ONNX lấy mask theo câu dài nhất trong nhóm, nên không đệm dài hơn câu đó được.
+
+**Kết quả:** sau làm nóng 7,185 MB, rồi gần như phẳng (+60 MB) qua bốn kịch bản và audio dài. Nhưng sau 2,603 câu với
+đủ kiểu độ dài, VRAM lên 8,445 MB. Phần tăng nằm ở onnxruntime: ở lần đo cuối, phần của torch đứng yên ở 680 MB, và việc
+cho onnxruntime nhả bộ nhớ ở bước 7 kéo được VRAM xuống. Sửa ở bước 7.
+
+## Bước 6. Cho encoder chạy song song với greedy
+
+Mục tiêu: sửa chỗ yếu ở bước 3, để greedy không phải dừng mỗi khi encoder chạy.
+
+Hình dung luồng GPU là một đầu bếp vừa sơ chế món mới (prefill, vài chục ms) vừa đảo các nồi đang nấu (greedy, 1 ms).
+Khách gọi món rải đều thì đầu bếp gần như chỉ đứng sơ chế, các nồi hiếm khi được đảo. Cách sửa là thêm một phụ bếp chỉ lo
+sơ chế, còn đầu bếp chính chỉ lo đảo nồi.
+
+| Phần | Làm gì |
+|---|---|
+| Luồng prefill | Lấy các câu đang chờ, tối đa bằng số slot trống, chạy fbank và encoder trên CUDA stream riêng. Xong thì đặt kết quả vào hàng "sẵn sàng" kèm một CUDA event |
+| Luồng greedy | Chạy tick liên tục trên stream của nó, không bao giờ chờ encoder. Đầu mỗi tick, nạp các nhóm đã sẵn sàng vào slot. Phía GPU đợi event của nhóm; CPU không đợi |
+| Gom nhóm | Trong lúc encoder bận, câu mới dồn lại, nên lượt sau tự to ra. Càng đông, nhóm càng to, không cần chỉnh tay |
+| Giữ chỗ | Slot được giữ cho một nhóm ngay khi luồng prefill lấy nhóm đó, nên luôn có chỗ cho nhóm vừa xong |
+| An toàn bộ nhớ | `record_stream` để vùng nhớ đầu ra của encoder không bị cấp lại khi greedy chưa chép xong |
+| Ưu tiên | Stream của greedy có ưu tiên cao hơn: các kernel nhỏ của nó được chạy trước kernel của encoder |
 
 ```mermaid
 flowchart LR
     C[Client] -- websocket --> IO["serve.py"]
     IO --> P[("hàng đợi<br/>theo thứ tự đến")]
-    P --> A["prefill: fbank + encoder<br/>MỘT lần cho cả nhóm"]
-    A --> S["32 slot trên GPU"]
+    P --> A["luồng prefill: fbank + encoder<br/>MỘT lần cho cả nhóm"]
+    A -- "nhóm sẵn sàng + CUDA event" --> S["luồng greedy: 32 slot"]
     S -- "mỗi tick: 8 bước greedy<br/>cho mọi slot (CUDA graph)" --> S
     S -- "slot xong: trả ngay" --> IO
     IO -- JSON --> C
 ```
 
-## Kết quả
+**Kết quả, rải đều, câu ~10 s:**
 
-Bảng đầy đủ tính lại bằng `python3 experiments/lite/analyze.py`.
+| Người nói cùng lúc | P90, sherpa | P90, lite một luồng | P90, lite hai luồng | Câu mỗi lượt prefill, hai luồng |
+|---:|---:|---:|---:|---:|
+| 128 | 0.77 s | 0.22 s | **0.12 s** | 1.1 |
+| 320 | 1.28 s | 0.69 s | **0.14 s** | 1.7 |
+| 384 | 1.20 s | 5.32 s (quá tải) | **0.14 s** | 1.9 |
+| 512 | 1.73 s | — | **0.17 s** | 2.6 |
+| 640 | 14.26 s (quá tải) | — | **0.21 s** | 3.6 |
+| 768 | — | — | **0.28 s** | 5.7 |
+| 1024 | — | — | 6.98 s (quá tải) | 15.9 |
+
+- **Số người tối đa:** 320 → 768. Trần xử lý: 352 → 916 giây audio mỗi giây, gần gấp đôi sherpa.
+- **Nhóm tự to ra khi đông:** từ 1.1 câu mỗi lượt ở 128 người lên 5.7 câu ở 768 người.
+- **Câu lẫn lộn, rải đều:** 192 → 320 người. **Dồn một lúc:** câu lẫn lộn 48 → 64 người; câu ~10 s vẫn 64 người, nhưng trần
+  xử lý 711 → 825.
+- **Cái giá:** ở tải nhẹ, mỗi câu chậm hơn một chút, vì encoder phải chia GPU với vòng greedy đang chạy song song. Rải
+  đều với câu ~10 s ở 32 người, P50 lên từ 0.08 s thành 0.11 s; dồn một lúc với 1–16 người, chậm hơn 0.01–0.05 s. Từ 64
+  người rải đều trở lên, bản hai luồng nhanh hơn ở mọi mức.
+
+Số liệu: [lite/results/gpu-20261018b/lite-e/](lite/results/gpu-20261018b/lite-e/).
+
+## Bước 7. Nhả VRAM khi vượt ngưỡng
+
+Mục tiêu: VRAM ổn định dù độ dài câu thay đổi liên tục.
+
+onnxruntime giữ lại bộ nhớ của các lượt trước để dùng lại. Khi kích thước thay đổi liên tục, có lúc không ô trống nào vừa,
+nó xin thêm vùng mới mà không trả vùng cũ. Đó là phần tăng ở bước 5.
+
+**Cách nhả.** Cờ `--vram-release-gb X`, code trong [transducer.py](lite/zipformer_lite/transducer.py):
+
+1. Trước mỗi lượt encoder, đọc VRAM đang dùng của cả GPU (`cudaMemGetInfo`, đúng con số `nvidia-smi` hiện).
+2. Nếu vượt X, lượt đó chạy kèm tùy chọn `memory.enable_memory_arena_shrinkage` của onnxruntime. Chạy xong, onnxruntime
+   trả mọi vùng đang trống về CUDA.
+3. VRAM tụt về phần model giữ, rồi chỉ tăng lại tới mức các lượt sau cần.
+
+Việc nhả chỉ xảy ra khi vượt ngưỡng, nên gần như không tốn gì. Nhả xảy ra lúc lượt đó chạy xong, nên VRAM có thể vượt ngưỡng
+một chút, tối đa bằng phần một lượt cần thêm. Giới hạn cứng `--gpu-mem-gb` vẫn giữ.
+
+**Kết quả, `--vram-release-gb 7.4`.** Cờ tính theo GiB, nên ngưỡng là 7,578 MB theo cách `nvidia-smi` hiện; sau làm
+nóng là 7,183 MB. Các số dưới đây là MB theo `nvidia-smi`:
+
+| Kịch bản | Không nhả | Nhả ở 7,578 MB |
+|---|---|---|
+| 2,603 câu, đủ kiểu độ dài, gửi từng câu | Tăng lên **8,445**, không giảm | Chạm ngưỡng thì nhả, tụt xuống **1,409**; cuối kịch bản **4,947** |
+| Rải đều, câu lẫn lộn, 32–512 người | 7,237–7,255 | 7,159–7,291. Ở 256 người, chạm 7,627 thì nhả 2 lần, tụt xuống 4,269 |
+| Audio dài, 1–32 người | 7,261 | 7,159, không cần nhả |
+
+- **VRAM không ở lại trên ngưỡng.** Đỉnh lấy mẫu mỗi giây là 7,627 MB, vượt ngưỡng 49 MB trước khi nhả.
+- **Không đổi tốc độ hay chữ.** Câu lẫn lộn, rải đều: vẫn 320 người, P90 ở 256 người là 0.26 s so với 0.22 s khi không
+  nhả. WER không đổi.
+- **Bộ nhớ dùng thật thấp hơn nhiều so với 7.2 GB.** Gửi từng câu một chỉ cần ~2.3 GB. Phần còn lại là bộ nhớ onnxruntime
+  giữ sẵn cho các lượt prefill lớn nhất của bước làm nóng.
+
+Số 1,409 MB và ~2.3 GB lấy từ vài mẫu `nvidia-smi` đọc tay qua `/health` lúc chạy 2,603 câu. Lượt chép từng câu này nằm ngoài
+phần client lấy mẫu mỗi giây. Các số còn lại có trong `summary.json`.
+
+**Chọn ngưỡng:** đặt cao hơn mức sau làm nóng một chút (in ra trong `server.out`, dòng `model ready`). Muốn VRAM thấp hơn
+hẳn thì hạ `--admit-max-seconds` để lượt prefill lớn nhất nhỏ lại.
+
+Số liệu: [lite/results/gpu-20261018b/lite-f/](lite/results/gpu-20261018b/lite-f/), so với
+[lite-d/long-utts](lite/results/gpu-20261018/lite-d/long-utts/) (không nhả).
+
+## Bước 8. Bench cuối so với sherpa
+
+Đo như [mục Cách đo](#cách-đo), với server C++ gốc của sherpa (17/10) và bản lite cuối (18/10, cờ mặc định, không nhả
+VRAM). Kết quả là bảng ở đầu tài liệu. Bảng theo từng mức:
 
 ### Dồn một lúc, câu ~10 s
 
 | Người dùng | P50 / P90, sherpa | P50 / P90, lite | Xử lý, sherpa | Xử lý, lite |
 |---:|---:|---:|---:|---:|
-| 1 | 0.13 / 0.15 s | 0.07 / 0.07 s | 76 s/giây | 144 s/giây |
-| 8 | 0.53 / 0.75 s | 0.14 / 0.17 s | 132 s/giây | 531 s/giây |
-| 16 | 0.68 / 0.87 s | 0.24 / 0.24 s | 188 s/giây | 650 s/giây |
-| 24 | 0.71 / 0.99 s | 0.36 / 0.39 s | 249 s/giây | 650 s/giây |
-| 32 | 0.96 / 1.33 s | 0.44 / 0.47 s | 236 s/giây | 692 s/giây |
-| 64 | 1.11 / 1.65 s | 0.81 / 0.88 s | 364 s/giây | 711 s/giây |
-| 128 | 1.81 / 2.75 s | 1.31 / 1.79 s | 422 s/giây | 699 s/giây |
-
-Câu dồn tới một lúc, nên mỗi lượt prefill của lite gom được 8–11 câu và chi phí của encoder được chia đều.
+| 1 | 0.13 / 0.15 s | 0.10 / 0.10 s | 76 s/giây | 105 s/giây |
+| 8 | 0.53 / 0.75 s | 0.15 / 0.15 s | 132 s/giây | 527 s/giây |
+| 16 | 0.68 / 0.87 s | 0.28 / 0.29 s | 188 s/giây | 581 s/giây |
+| 24 | 0.71 / 0.99 s | 0.34 / 0.36 s | 249 s/giây | 638 s/giây |
+| 32 | 0.96 / 1.33 s | 0.37 / 0.45 s | 236 s/giây | 701 s/giây |
+| 64 | 1.11 / 1.65 s | 0.61 / 0.81 s | 364 s/giây | 754 s/giây |
+| 128 | 1.81 / 2.75 s | 1.02 / 1.49 s | 422 s/giây | 802 s/giây |
+| 256 | — | 1.83 / 2.86 s | — | 825 s/giây |
 
 ### Dồn một lúc, câu 1.4–33 s
 
 | Người dùng | P50 / P90, sherpa | P50 / P90, lite | Xử lý, sherpa | Xử lý, lite |
 |---:|---:|---:|---:|---:|
-| 1 | 0.13 / 0.19 s | 0.06 / 0.10 s | 85 s/giây | 161 s/giây |
-| 8 | 0.49 / 0.62 s | 0.21 / 0.30 s | 116 s/giây | 278 s/giây |
-| 16 | 0.46 / 0.77 s | 0.32 / 0.40 s | 157 s/giây | 315 s/giây |
-| 32 | 0.57 / 1.22 s | 0.47 / 0.63 s | 176 s/giây | 394 s/giây |
-| 48 | 0.76 / 1.25 s | 0.77 / 0.99 s | 244 s/giây | 378 s/giây |
-| 64 | 0.89 / 1.98 s | 1.10 / 1.25 s | 207 s/giây | 372 s/giây |
-| 128 | 1.51 / 2.81 s | 1.61 / 2.53 s | 282 s/giây | 357 s/giây |
+| 1 | 0.13 / 0.19 s | 0.07 / 0.11 s | 85 s/giây | 147 s/giây |
+| 8 | 0.49 / 0.62 s | 0.23 / 0.34 s | 116 s/giây | 245 s/giây |
+| 16 | 0.46 / 0.77 s | 0.32 / 0.44 s | 157 s/giây | 278 s/giây |
+| 32 | 0.57 / 1.22 s | 0.39 / 0.60 s | 176 s/giây | 343 s/giây |
+| 64 | 0.89 / 1.98 s | 0.56 / 0.98 s | 207 s/giây | 438 s/giây |
+| 128 | 1.51 / 2.81 s | 0.93 / 1.64 s | 282 s/giây | 490 s/giây |
+| 256 | — | 1.40 / 2.71 s | — | 552 s/giây |
 
 Câu ngắn không phải chờ câu dài trong cùng batch, vì slot nào xong là trả ngay.
 
@@ -161,159 +372,57 @@ Câu ngắn không phải chờ câu dài trong cùng batch, vì slot nào xong 
 
 | Người nói cùng lúc | Request đến mỗi giây | P50 / P90, sherpa | P50 / P90, lite | Xử lý, sherpa | Xử lý, lite |
 |---:|---:|---:|---:|---:|---:|
-| 32 | 3.2 | 0.15 / 0.19 s | 0.08 / 0.12 s | 32 s/giây | 32 s/giây |
-| 128 | 12.8 | 0.33 / 0.77 s | 0.12 / 0.22 s | 127 s/giây | 129 s/giây |
-| 192 | 19.2 | 0.86 / 1.31 s | 0.16 / 0.33 s | 194 s/giây | 193 s/giây |
-| 256 | 25.7 | 0.91 / 1.31 s | 0.21 / 0.44 s | 253 s/giây | 255 s/giây |
-| 320 | 32.0 | 0.87 / 1.28 s | 0.29 / 0.69 s | 317 s/giây | 320 s/giây |
-| 384 | 38.5 | 0.85 / 1.20 s | 3.71 / 5.32 s (quá tải) | 387 s/giây | 352 s/giây |
-| 512 | 51.2 | 1.32 / 1.73 s | — | 506 s/giây | — |
-| 640 | 60.1 | 9.46 / 14.26 s (quá tải) | — | 515 s/giây | — |
+| 32 | 3.2 | 0.15 / 0.19 s | 0.11 / 0.13 s | 32 s/giây | 32 s/giây |
+| 128 | 12.8 | 0.33 / 0.77 s | 0.09 / 0.12 s | 127 s/giây | 128 s/giây |
+| 256 | 25.7 | 0.91 / 1.31 s | 0.10 / 0.13 s | 253 s/giây | 255 s/giây |
+| 384 | 38.5 | 0.85 / 1.20 s | 0.11 / 0.14 s | 387 s/giây | 383 s/giây |
+| 512 | 51.2 | 1.32 / 1.73 s | 0.13 / 0.17 s | 506 s/giây | 512 s/giây |
+| 640 | 60.1 | 9.46 / 14.26 s (quá tải) | 0.15 / 0.21 s | 515 s/giây | 641 s/giây |
+| 768 | 76.9 | — | 0.20 / 0.28 s | — | 767 s/giây |
+| 1024 | 102.7 | — | 4.67 / 6.98 s (quá tải) | — | 916 s/giây |
 
 N người nói liền tạo ra N giây audio mỗi giây. Khi cột "Xử lý" thấp hơn N là server đã không theo kịp.
-
-- **Tới 320 người, lite trả chữ nhanh hơn 2–4 lần.** Trong mốc P90 ≤ 1 s, lite phục vụ được 320 người, sherpa 128.
-- **Từ 384 người, lite hết sức trước.** Lite chỉ theo kịp tới ~350 giây audio mỗi giây, sherpa tới ~515.
-
-Vì sao lite hết sức trước ở đây:
-
-1. **Request đến rải rác,** cứ ~26 ms một câu ở mức 384 người.
-2. **Lite chạy prefill ngay khi có câu.** Mỗi tick chỉ ~1 ms, nên mỗi lượt prefill chỉ gom được 1–2 câu (đo được trung bình
-   1.6–1.7 câu).
-3. **Mỗi lượt encoder có chi phí cố định lớn,** khoảng 20+ ms dù chỉ có 1 câu. Lúc đó prefill chiếm 88–96% thời gian của
-   luồng GPU, nên encoder không theo kịp nữa.
-4. **Sherpa thì gom đủ 5 câu mỗi batch khi đông** (đo được trung bình 5.0 ở 512 người), và có 3 luồng chạy chồng lên nhau
-   nên giấu được chi phí cố định.
-
-Giống xe buýt: lite cho xe chạy ngay khi có 1–2 khách, nên khách đợi ít; nhưng lúc cực đông thì số chuyến không đủ. Sherpa
-đợi đủ 5 khách mới chạy và có 3 xe chạy xen nhau. Cách sửa (chưa làm): khi hàng đợi bắt đầu dài, cho prefill chờ thêm vài
-ms để gom nhiều câu hơn; hoặc làm encoder rẻ hơn (fp16, TensorRT).
-
-Ở kịch bản dồn một lúc không có chuyện này, vì câu đến cùng lúc nên lite gom được 8–16 câu mỗi lượt.
 
 ### Rải đều, câu 1.4–33 s
 
 | Người nói cùng lúc | Request đến mỗi giây | P50 / P90, sherpa | P50 / P90, lite | Xử lý, sherpa | Xử lý, lite |
 |---:|---:|---:|---:|---:|---:|
-| 32 | 4.6 | 0.16 / 0.25 s | 0.08 / 0.14 s | 32 s/giây | 32 s/giây |
-| 64 | 8.9 | 0.20 / 0.33 s | 0.09 / 0.17 s | 63 s/giây | 63 s/giây |
-| 128 | 15.7 | 3.56 / 7.03 s (quá tải) | 0.13 / 0.29 s | 112 s/giây | 124 s/giây |
-| 192 | 26.6 | — | 0.21 / 0.48 s | — | 190 s/giây |
-| 256 | 34.6 | — | 0.49 / 1.37 s | — | 245 s/giây |
-| 320 | 35.8 | — | 7.44 / 14.15 s (quá tải) | — | 264 s/giây |
+| 32 | 4.6 | 0.16 / 0.25 s | 0.08 / 0.13 s | 32 s/giây | 32 s/giây |
+| 64 | 8.9 | 0.20 / 0.33 s | 0.08 / 0.12 s | 63 s/giây | 63 s/giây |
+| 128 | 15.7 | 3.56 / 7.03 s (quá tải) | 0.09 / 0.13 s | 112 s/giây | 124 s/giây |
+| 192 | 26.6 | — | 0.10 / 0.14 s | — | 189 s/giây |
+| 256 | 34.6 | — | 0.11 / 0.22 s | — | 251 s/giây |
+| 320 | 44.3 | — | 0.13 / 0.30 s | — | 312 s/giây |
+| 384 | 52.5 | — | 0.61 / 1.10 s | — | 372 s/giây |
 
-Với câu dài ngắn lẫn lộn, sherpa phải đệm cả batch theo câu dài nhất, nên quá tải ở 128 người. Lite chỉ đệm trong lượt
-prefill, vòng greedy chạy đúng độ dài thật của từng câu, nên chịu được tới 192 người trong mốc 1 s, gấp 3 lần.
+Với câu dài ngắn lẫn lộn, sherpa đệm cả batch theo câu dài nhất. Lite chỉ đệm trong lượt prefill; vòng greedy chạy đúng độ
+dài thật của từng câu.
 
-## Audio dài
+**"Một câu chạy một mình"** ở phần Kết quả lấy từ lượt chép từng câu làm mốc trước mỗi kịch bản (55 câu ~10 s): sherpa
+0.135 s, lite 0.076 s. Mức 1 người ở bảng dồn một lúc chỉ có 5 request.
 
-**Sherpa** không chia gì: nó đưa nguyên file vào encoder, tối đa 300 s. Encoder nhìn cả file một lúc, nên bộ nhớ tăng theo
-bình phương độ dài. Chưa đo sherpa với file dài trên GPU.
+**Máy đo:**
 
-**Lite** làm theo cách của chính tác giả Zipformer, recipe `long_file_recog` của icefall:
+| Thông số | Sherpa (17/10) | Lite một luồng, bước 3–5 (18/10) | Lite cuối, bước 6–8 (18/10) |
+|---|---|---|---|
+| GPU | RTX 3060 12 GB | RTX 3060 12 GB, `GPU-17003539-7e1c-a01d-d78b-d0f3e20544a0` | RTX 3060 12 GB, `GPU-2d90383a-9002-8556-a080-7e64c3d06d3f`, giới hạn 150 W |
+| Máy thuê | Xem [PHASE1.md](PHASE1.md#phương-pháp-đo) | VKong `vk_0b6a76a1700ab3f0`, $0.084/giờ | VKong `vk_686501dea0808c36`, $0.084/giờ, container `38cc89602472` |
+| Phần mềm | sherpa-onnx v1.13.8 | torch 2.8.0, onnxruntime-gpu 1.26.0, Python 3.11.13 | Như cột trước, driver 595.104.02 |
+| Xung nhịp, nhiệt độ GPU khi có tải | — | Tới 1972 MHz, 52–71 °C | 1777–1942 MHz, 53–80 °C |
 
-1. Cắt file thành **cửa sổ 30 s, cứ 26 s một cửa sổ**, hai cửa sổ liền nhau chồng 4 s.
-2. Mỗi cửa sổ là một câu bình thường trong slot, prefill chung với các request khác. Một file 5 phút thành 12 cửa sổ chạy
-   song song.
-3. Mỗi cửa sổ chỉ giữ token nằm từ giây thứ 2 tới giây thứ 28 của nó (cửa sổ đầu giữ từ 0, cửa sổ cuối giữ tới hết). Các
-   phần giữ lại nối tiếp nhau, nên chỉ việc nối token theo thứ tự.
+Không khóa được xung nhịp GPU trên máy thuê. Ba cột đo trên ba máy khác nhau, nên số tuyệt đối chỉ đúng cho máy đã đo;
+chênh lệch giữa các bản lớn hơn nhiều so với độ lệch giữa các máy.
 
-Encoder không bao giờ nhận quá 30 s, dù file dài bao nhiêu.
-
-| Kiểm tra | Kết quả |
-|---|---|
-| 97 file dài (71–300 s), mỗi file chạy một mình | WER **2.19%**, trả chữ sau 0.40 s cho file trung bình 207 s |
-| Cùng nội dung đó, chép từng câu một (2,603 câu) | WER **2.25%** |
-
-Cắt cửa sổ không làm sai chữ, thậm chí nhỉnh hơn một chút nhờ được nhìn qua ranh giới giữa các câu.
-
-Nhiều người gửi file dài cùng lúc:
-
-| Người dùng | P50 / P90 thời gian chờ | Xử lý | WER |
-|---:|---:|---:|---:|
-| 1 | 0.48 / 0.52 s | 520 s/giây | 2.25% |
-| 4 | 1.17 / 1.65 s | 574 s/giây | 2.15% |
-| 8 | 1.95 / 2.45 s | 606 s/giây | 1.41% |
-| 16 | 3.29 / 5.10 s | 587 s/giây | 1.88% |
-
-Ở mức 8 và 16 người, vài file cho chữ hơi khác lúc chạy một mình, vì chỗ nối cửa sổ được đệm khác nhau khi chung nhóm;
-WER không tệ đi.
-
-## VRAM
-
-| | Lúc bắt đầu | Sau khi chạy | Ghi chú |
-|---|---:|---:|---|
-| Sherpa | ~1 GB | 6.6 GB | Tăng theo kích thước batch lớn nhất từng gặp, không trần |
-| Lite, bản đo ở các bảng trên | 4.1 GB | 7.7 GB | Bước làm nóng chưa phủ hết các hình dạng prefill |
-| Lite, làm nóng theo "đường biên" | 7.2 GB | 7.2 GB qua 4 kịch bản và audio dài (+60 MB) | Nhưng sau 2,603 câu với độ dài đủ kiểu: 8.4 GB |
-
-- **Lite có trần.** Mỗi lượt prefill tối đa 16 câu và 240 s audio sau khi đệm, mỗi cửa sổ tối đa 30 s, và onnxruntime bị
-  giới hạn 8 GB.
-- **Làm nóng theo "đường biên":** lúc khởi động, với mỗi số câu g từ 1 tới 16, lite chạy một nhóm g câu ở độ dài lớn nhất được
-  phép. Mọi nhóm gặp sau đó đều không lớn hơn một nhóm đã chạy.
-- **Nhưng chưa phẳng hoàn toàn.** Khi gặp hàng nghìn kích thước khác nhau, bộ cấp phát bị phân mảnh và xin thêm vùng mới.
-- **Đã code, chưa đo:** cờ `--shrink-arena=1` cho onnxruntime trả lại bộ nhớ thừa sau mỗi lượt; số VRAM riêng của torch
-  trong `/health` để biết phần tăng nằm ở đâu.
-- **Không đệm lên các độ dài cố định được,** vì encoder ONNX lấy mask theo câu dài nhất trong nhóm: đệm dài hơn thì báo lỗi.
-
-## Trạng thái
-
-| Việc | Trạng thái |
-|---|---|
-| Slot + continuous batching, prefill một lần cho cả nhóm | Xong, đã đo |
-| Vòng greedy bằng CUDA graph | Xong, đã đo |
-| Fbank trên GPU | Xong, đã kiểm tra khớp sherpa |
-| Audio dài: cửa sổ 30 s theo icefall | Xong, đã đo |
-| VRAM có trần | Xong |
-| VRAM phẳng hoàn toàn | Chưa: còn phân mảnh khi độ dài thay đổi nhiều |
-| Từ chối khi bận | Code xong, chưa đo |
-| Trần khi tải rải đều rất cao | Chưa: cần gom prefill to hơn hoặc encoder rẻ hơn |
-| Encoder chạy song song với greedy | Chưa làm |
-
-## Khác biệt cần biết
-
-- **onnxruntime 1.26** thay vì 1.28 như bản C++ của sherpa: 1.26 là bản cuối trên PyPI build cho CUDA 12.
-- **Chỉ nhận audio 16 kHz.** Sherpa tự resample, lite trả lỗi.
-- **Nhận file tối đa 300 s** như sherpa; dài hơn thì trả `{"error": "too_long"}`.
-- **Các flag cũ của sherpa** (`--max-batch-size`, `--num-work-threads`, đường dẫn model, …) vẫn được nhận nhưng bỏ qua,
-  kèm cảnh báo.
-- **Số lite trong các bảng chính** đo bằng bản trước khi có cửa sổ 30 s (giới hạn câu 35 s, thư mục `lite-c`). Bản có cửa
-  sổ (`lite-d`) cho số gần như y hệt ở 4 kịch bản: 64, 48, 320 và 192 người.
-
-## Các tham số
-
-| Cờ | Mặc định | Ý nghĩa |
-|---|---|---|
-| `--num-slots` | 32 | Số cửa sổ được giải mã cùng lúc |
-| `--steps` | 8 | Số bước greedy mỗi tick |
-| `--max-utterance-length` | 300 | Từ chối request dài hơn số giây này |
-| `--window-seconds`, `--window-extra` | 30, 2 | Cửa sổ cho audio dài, và phần chồng mỗi bên |
-| `--admit-max`, `--admit-max-seconds` | 16, 240 | Một lượt prefill tối đa bao nhiêu cửa sổ và bao nhiêu giây audio sau khi đệm |
-| `--max-pending-seconds` | 120 | Từ chối khi lượng audio đang chờ vượt số giây này. `0` = không bao giờ từ chối |
-| `--gpu-mem-gb` | 8 | Giới hạn bộ nhớ GPU của onnxruntime |
-| `--cuda-graph` | 1 | `0` = chạy greedy từng lệnh, để so sánh |
-| `--shrink-arena` | 0 | `1` = onnxruntime trả lại bộ nhớ thừa sau mỗi lượt (chưa đo) |
-
-## Máy đo
-
-| Thông số | Giá trị |
-|---|---|
-| GPU | NVIDIA GeForce RTX 3060 12 GB, driver 595.104.02, UUID `GPU-17003539-7e1c-a01d-d78b-d0f3e20544a0` |
-| Máy thuê | VKong `vk_0b6a76a1700ab3f0`, Việt Nam, $0.084/giờ, container `75931ba6ba31` |
-| Image | `pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime`: torch 2.8.0, onnxruntime-gpu 1.26.0, Python 3.11.13 |
-| Xung nhịp GPU | Không khóa được, tới 1972 MHz khi có tải |
-| Nhiệt độ GPU | 52–71 °C |
-| Số request | 53,324, không lỗi nào |
-| Chi phí | Khoảng 4 giờ máy, gồm cả các lần thử, khoảng $0.35 |
-
-Máy của sherpa: xem [PHASE1.md](PHASE1.md#phương-pháp-đo).
-
-## Chạy lại
-
-Cần CLI của VKong đã đăng nhập. Chạy từ thư mục gốc của repo.
+**Kiểm tra số trong các bảng** (không cần GPU, chỉ cần Python):
 
 ```bash
-vkong run -C lite --detach                                   # thuê máy, cài thư viện, tải model và LibriSpeech
+python3 experiments/lite/analyze.py
+```
+
+**Chạy lại.** Cần CLI của VKong đã đăng nhập. Chạy từ thư mục gốc của repo:
+
+```bash
+vkong run -C lite --detach --accept-price                    # thuê máy, cài thư viện, tải model và LibriSpeech
 vkong instances                                              # lấy id của máy, dạng vk_xxxx
 bash experiments/lite/keep_tunnel.sh vk_xxxx /tmp/lite-url & # giữ tunnel, tự nối lại khi đứt
 bash experiments/lite/run_suite.sh @/tmp/lite-url lite "max_pending_seconds=0"
@@ -322,21 +431,20 @@ python3 experiments/lite/fetch.py $(cat /tmp/lite-url) --run my-rerun --servers 
 vkong app stop zipformer-asr-lite --yes                      # Ctrl+C không trả máy
 ```
 
-Kiểm tra lite cho ra đúng chữ như sherpa (cần `pip install kaldi-native-fbank sherpa-onnx`):
+Thêm `&vram_release_gb=7.4` vào chuỗi cờ để bật nhả VRAM như bước 7.
 
-```bash
-cd lite && python check.py --device cpu --per-set 16
-```
+## Ghi chú khi làm với VKong
 
-## Code
-
-| File | Việc |
-|---|---|
-| [lite/serve.py](lite/serve.py) | Websocket theo giao thức sherpa, `/health` |
-| [lite/zipformer_lite/engine.py](lite/zipformer_lite/engine.py) | Slot, prefill theo nhóm, các bước greedy, cửa sổ cho audio dài, từ chối |
-| [lite/zipformer_lite/transducer.py](lite/zipformer_lite/transducer.py) | Prefill (fbank + encoder ONNX trên GPU), decoder và joiner bằng torch, tạo JSON |
-| [lite/zipformer_lite/fbank.py](lite/zipformer_lite/fbank.py) | Fbank kiểu Kaldi bằng torch |
-| [lite/check.py](lite/check.py) | So fbank và chữ với sherpa |
-| [lite/bench.py](lite/bench.py), [lite/loadtest.py](lite/loadtest.py), [lite/audio.py](lite/audio.py) | Chạy trên máy GPU: bật server, chạy client đo, bộ câu LibriSpeech |
-| [lite/results/gpu-20261018/](lite/results/gpu-20261018/) | Số đo thô: `lite-c` (bảng chính), `lite-d` (cửa sổ, audio dài, VRAM) |
-| [experiments/lite/](experiments/lite/) | `run_suite.sh`, `keep_tunnel.sh`, `fetch.py`, `analyze.py` |
+- **Giá.** Khi chạy không tương tác, `vkong run` đòi `--accept-price`. RTX 3060 12 GB khoảng $0.084/giờ. Trả máy ngay khi
+  xong bằng `vkong app stop zipformer-asr-lite --yes`.
+- **`init failed (exit -1): deploy Run superseded during init`** có thể hiện ra ngay sau `vkong run --detach`, trong khi
+  `vkong instances` vẫn báo máy `running`. Chạy `vkong attach <id> -C lite --setup` để cài lại và chạy workload. Trong lúc
+  đó, `attach` thường báo `user session auth failed: EOF`.
+- **Tunnel hay đứt** trong khi máy vẫn chạy. `keep_tunnel.sh` tự nối lại và ghi địa chỉ mới vào file; `run_suite.sh` đọc
+  file đó ở mỗi lệnh. Mọi phép đo chạy trên máy GPU, nên tunnel đứt không làm sai số đo.
+- **Sửa code thì dùng `vkong attach <id> -C lite --update`,** không cần thuê lại. Lệnh này đẩy code lên và chạy lại
+  workload. `results/` nằm trong `.vkongignore`, nên kết quả cũ trên máy vẫn còn. Tải hết về một lần trước khi trả máy.
+- **Không khóa được xung nhịp GPU** trên máy thuê, nên các bản chạy trên máy khác nhau chỉ nên so độ lớn.
+- **Khác biệt với sherpa cần biết:** onnxruntime 1.26 thay vì 1.28 (1.26 là bản cuối trên PyPI build cho CUDA 12); lite
+  chỉ nhận audio 16 kHz, không tự resample; các cờ cũ của sherpa (`--max-batch-size`, đường dẫn model, …) được nhận nhưng
+  bỏ qua, kèm cảnh báo.

@@ -190,13 +190,17 @@ def server_stats(url):
 
 
 def stats_delta(before, after):
-    """Per level: prefills, their mean size, and the share of GPU-worker time spent prefilling."""
+    """Per level: prefills, their mean size, the share of the time the prefill thread and the greedy
+    thread were busy (they overlap), and the share of their busy time spent prefilling."""
     if not before or not after:
         return None
-    d = {k: after.get(k, 0) - before.get(k, 0) for k in ("admits", "admitted", "admit_s", "ticks", "steps", "step_s")}
+    keys = ("admits", "admitted", "admit_s", "ticks", "steps", "step_s", "clock_s", "vram_releases")
+    d = {k: after.get(k, 0) - before.get(k, 0) for k in keys}
     busy = d["admit_s"] + d["step_s"]
     return dict(d, prefill_size_mean=d["admitted"] / d["admits"] if d["admits"] else None,
                 admit_share=d["admit_s"] / busy if busy else None,
+                prefill_busy=d["admit_s"] / d["clock_s"] if d["clock_s"] else None,
+                greedy_busy=d["step_s"] / d["clock_s"] if d["clock_s"] else None,
                 tick_ms=1e3 * d["step_s"] / d["ticks"] if d["ticks"] else None,
                 gpu_used_mb=after.get("gpu_used_mb"), torch_reserved_mb=after.get("torch_reserved_mb"))
 
@@ -343,8 +347,10 @@ def main():
                   f"batch {f3(level['batch_size_mean'])} | GPU {f0(level['gpu_util_mean'])}% "
                   f"server CPU {f3(level['server_cpu_cores_mean'])} cores client {f3(level['client_cpu_cores'])} | "
                   f"match {f3(level['match'])} WER {level['wer']:.2%} | rejected {level['reject_rate']:.1%} | "
-                  + (f"prefill {f3(ss['prefill_size_mean'])} admit {f3(ss['admit_share'])} tick {f3(ss['tick_ms'])}ms "
-                     f"VRAM {f0(ss['gpu_used_mb'])}MB torch {f0(ss['torch_reserved_mb'])}MB | " if (ss := level["server_stats"]) else "")
+                  + (f"prefill {f3(ss['prefill_size_mean'])} busy prefill {f3(ss.get('prefill_busy'))} "
+                     f"greedy {f3(ss.get('greedy_busy'))} tick {f3(ss['tick_ms'])}ms "
+                     f"VRAM {f0(ss['gpu_used_mb'])}MB max {f0(level['gpu_mem_max_mb'])}MB torch {f0(ss['torch_reserved_mb'])}MB "
+                     f"releases {ss.get('vram_releases', 0)} | " if (ss := level["server_stats"]) else "")
                   + f"{'PASS' if level['passed'] else 'FAIL'}",
                   flush=True)
             if level["errors"]:

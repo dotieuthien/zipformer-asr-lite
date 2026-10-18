@@ -1,26 +1,33 @@
 """Continuous batching over fixed GPU slots: prefill once per group, then decode every slot one step
 at a time; a slot answers as soon as its window is done.
 
+Two threads share the GPU, each on its own CUDA stream, so the encoder never stops the greedy loop:
+
+- Prefill thread. When slots are free, take up to min(free slots, admit_max) pending windows in
+  arrival order, as vieneu lite does. Run fbank and the encoder ONCE for the group, padded to its
+  longest window, and hand the result to the greedy thread with a CUDA event. Padding exists only
+  in this prefill: the greedy loop has none. While the encoder runs, new windows pile up, so the
+  next group is bigger by itself: the busier the server, the bigger the groups.
+- Greedy thread. Each tick:
+  1. Admit. Copy every group the prefill thread has finished into its slots. The GPU waits for
+     the group's event; the thread does not.
+  2. Step, `steps` times. One greedy step for all slots together: joiner on each slot's current
+     frame, argmax, decoder on the new context. Sherpa's rule: at most one token per frame, <unk>
+     counts as blank. Each slot has its own frame index; empty and finished slots run along,
+     masked, so a step is the same few kernels whatever the slots hold. That is what lets the
+     `steps` steps be recorded once as a CUDA graph and replayed with one call per tick.
+  3. Collect. Copy to the host which slots are done and free them at once; a request is answered
+     when its last window is done.
+
+A slot is promised to a group when the prefill thread takes it, and given back when its window is
+done, so the greedy thread always has room for what the prefill thread hands over.
+
 Long audio, as icefall's long_file_recog does it: a request is cut into windows of window_s (30 s)
 every window_s - 2 x extra_s (26 s), so neighbours overlap by 2 x extra_s. Each window is decoded on
 its own, in its own slot. A window keeps the tokens from extra_s after its start to extra_s before
 its end (from the very start for the first window, to the very end for the last), so the kept
 parts tile the audio, and the request's answer is the kept tokens of its windows, in order. A
 request of up to window_s is one window and keeps everything.
-
-One worker thread owns the GPU. Each tick:
-
-1. Admit. If slots are free, take up to min(free slots, admit_max) pending windows in arrival
-   order, as vieneu lite does. Run fbank and the encoder ONCE for the group, padded to its longest
-   window, and copy each window's encoder output into its own slot. Padding exists only in this
-   prefill: the greedy loop has none.
-2. Step, `steps` times. One greedy step for all slots together: joiner on each slot's current
-   frame, argmax, decoder on the new context. Sherpa's rule: at most one token per frame, <unk>
-   counts as blank. Each slot has its own frame index; empty and finished slots run along,
-   masked, so a step is the same few kernels whatever the slots hold. That is what lets the
-   `steps` steps be recorded once as a CUDA graph and replayed with one call per tick.
-3. Collect. Copy to the host which slots are done and free them at once; a request is answered
-   when its last window is done.
 
 Fixed GPU memory. The greedy loop's memory is allocated once (slots, CUDA graph). What a prefill
 allocates depends on its shape, g windows x the longest one's length, which is bounded: no window
@@ -35,6 +42,7 @@ already waiting is over max_pending_s a new request is refused at once (Busy) in
 seconds for a late answer. max_pending_s=0 never refuses.
 """
 import collections
+import contextlib
 import math
 import sys
 import threading
@@ -82,12 +90,13 @@ class Engine:
         self.asr, self.steps, self.admit_max = asr, steps, admit_max
         self.max_seconds, self.window_s, self.extra_s = max_seconds, window_s, extra_s
         self.admit_max_seconds, self.max_pending_s = admit_max_seconds, max_pending_s
+        cuda = asr.device.type == "cuda"
         self.config = dict(num_slots=num_slots, steps=steps, max_seconds=max_seconds, window_s=window_s,
                            extra_s=extra_s, admit_max=admit_max, admit_max_seconds=admit_max_seconds,
-                           max_pending_s=max_pending_s, cuda_graph=cuda_graph and asr.device.type == "cuda")
+                           max_pending_s=max_pending_s, cuda_graph=cuda_graph and cuda)
         dev, b = asr.device, num_slots
         self.t_max = out_frames(num_frames(int(window_s * SR)))
-        # Slot state, on the GPU, fixed size.
+        # Slot state, on the GPU, fixed size. Only the greedy thread touches it.
         self.enc = torch.zeros(b, self.t_max, 512, device=dev)   # encoder output of each slot
         self.length = torch.zeros(b, dtype=torch.int64, device=dev)  # its number of frames
         self.t = torch.zeros(b, dtype=torch.int64, device=dev)       # next frame to decode
@@ -100,12 +109,20 @@ class Engine:
         self.logps = torch.zeros(b, self.t_max, device=dev)
         self.rows = torch.arange(b, device=dev)
         self.owner = [None] * b                                      # host side: the job in each slot
-        self.pending = collections.deque()
+        # Shared by the two threads, under self.lock.
+        self.pending = collections.deque()    # windows waiting for a prefill
         self.pending_s = 0.0
+        self.ready = collections.deque()      # prefilled groups waiting for their slots
+        self.free = b                         # slots neither decoding nor promised to a group
         self.stats = collections.Counter()
         self.lock = threading.Condition()
+        # The greedy stream has the higher priority: its small kernels go ahead of the encoder's.
+        self.stream = torch.cuda.Stream(dev, priority=-1) if cuda else None
         self.graph = self._capture() if self.config["cuda_graph"] else None
-        threading.Thread(target=self._run, name="gpu-worker", daemon=True).start()
+        if cuda:
+            torch.cuda.synchronize(dev)  # slot state and graph ready before either stream uses them
+        threading.Thread(target=self._prefill_loop, name="prefill", daemon=True).start()
+        threading.Thread(target=self._greedy_loop, name="greedy", daemon=True).start()
 
     @torch.no_grad()
     def warm_up(self):
@@ -156,7 +173,7 @@ class Engine:
             self.pending_s += sum(j.seconds for j in jobs)
             self.stats["accepted"] += 1
             self.stats["windows"] += len(jobs)
-            self.lock.notify()
+            self.lock.notify_all()
         return req.future
 
     def _finish(self, job, tokens, frames, logps):
@@ -173,7 +190,16 @@ class Engine:
             self.stats["done"] += 1
             self.stats["latency_s"] += time.perf_counter() - req.arrival
 
-    # -- the three parts of a tick ---------------------------------------------------------------
+    def _fail(self, jobs, error):
+        """Fail the requests of these windows and give their slots back."""
+        for j in jobs:
+            if not j.request.future.done():
+                j.request.future.set_exception(error)
+        with self.lock:
+            self.free += len(jobs)
+            self.lock.notify_all()
+
+    # -- the prefill thread ----------------------------------------------------------------------
 
     def _take(self, free):
         """Up to min(free, admit_max) pending windows in arrival order, while the padded group stays
@@ -188,15 +214,37 @@ class Engine:
             self.pending_s -= j.seconds
         return group
 
-    def _admit(self):
-        free = [s for s, job in enumerate(self.owner) if job is None]
-        with self.lock:
-            group = self._take(len(free)) if free and self.pending else []
-        if not group:
-            return
-        start = time.perf_counter()
-        enc, lens = self.asr.prefill([j.samples for j in group])   # the one encoder run for the group
-        slots = torch.tensor(free[:len(group)], device=self.asr.device)
+    @torch.no_grad()
+    def _prefill_loop(self):
+        while True:
+            with self.lock:
+                while not (self.pending and self.free):
+                    self.lock.wait()
+                group = self._take(self.free)
+                self.free -= len(group)   # promised to this group
+            start = time.perf_counter()
+            try:
+                enc, lens, ready = self.asr.prefill([j.samples for j in group])   # the one encoder run for the group
+            except Exception as e:  # noqa: BLE001 - fail this group, keep serving
+                self._fail(group, e)
+                continue
+            print(f"size: {len(group)}", file=sys.stderr, flush=True)  # sherpa's log line, read by loadtest.py
+            with self.lock:
+                self.ready.append((group, enc, lens, ready))
+                self.stats.update(admits=1, admitted=len(group))
+                self.stats["admit_s"] += time.perf_counter() - start
+                self.lock.notify_all()
+
+    # -- the greedy thread: the three parts of a tick --------------------------------------------
+
+    def _admit(self, group, enc, lens, ready):
+        if ready is not None:
+            stream = torch.cuda.current_stream()
+            stream.wait_event(ready)   # the GPU waits for the encoder, the thread does not
+            enc.record_stream(stream)  # made on the prefill stream: not reused before we are done
+            lens.record_stream(stream)
+        free = [s for s, job in enumerate(self.owner) if job is None][:len(group)]
+        slots = torch.tensor(free, device=self.asr.device)
         self.enc[slots, :enc.shape[1]] = enc
         self.length[slots] = lens
         self.t[slots] = 0
@@ -206,9 +254,6 @@ class Engine:
         self.active[slots] = True
         for s, j in zip(free, group):
             self.owner[s] = j
-        print(f"size: {len(group)}", file=sys.stderr, flush=True)  # sherpa's log line, read by loadtest.py
-        self.stats.update(admits=1, admitted=len(group))
-        self.stats["admit_s"] += time.perf_counter() - start
 
     def _step(self):
         """One greedy step for every slot."""
@@ -248,7 +293,7 @@ class Engine:
 
     def _collect(self):
         done = (self.active & (self.t >= self.length)).nonzero().squeeze(1)
-        done_h = done.tolist()  # the tick's one wait for the GPU
+        done_h = done.tolist()  # the tick's one wait, for the greedy stream only
         if not done_h:
             return
         n, tokens, frames, logps = (x[done].cpu().numpy() for x in (self.n, self.tokens, self.frames, self.logps))
@@ -256,32 +301,40 @@ class Engine:
         for i, s in enumerate(done_h):
             job, self.owner[s] = self.owner[s], None
             self._finish(job, tokens[i, :n[i]], frames[i, :n[i]], logps[i, :n[i]])
+        with self.lock:
+            self.free += len(done_h)
+            self.lock.notify_all()
 
     @torch.no_grad()
-    def _run(self):
-        while True:
-            with self.lock:
-                while not self.pending and all(j is None for j in self.owner):
-                    self.lock.wait()
-            try:
-                self._admit()
-                start = time.perf_counter()
-                if self.graph:
-                    self.graph.replay()
-                else:
-                    self._steps()
-                self._collect()
-                self.stats.update(ticks=1, steps=self.steps)
-                self.stats["step_s"] += time.perf_counter() - start
-            except Exception as e:  # noqa: BLE001 - fail what is in the slots, keep serving
-                for s, job in enumerate(self.owner):
-                    if job is not None:
-                        if not job.request.future.done():
-                            job.request.future.set_exception(e)
-                        self.owner[s] = None
-                self.active.zero_()
+    def _greedy_loop(self):
+        with torch.cuda.stream(self.stream) if self.stream else contextlib.nullcontext():
+            while True:
+                with self.lock:
+                    while not self.ready and all(j is None for j in self.owner):
+                        self.lock.wait()
+                    groups = collections.deque(self.ready)
+                    self.ready.clear()
+                try:
+                    while groups:
+                        self._admit(*groups[0])
+                        groups.popleft()
+                    start = time.perf_counter()
+                    if self.graph:
+                        self.graph.replay()
+                    else:
+                        self._steps()
+                    self._collect()
+                    self.stats.update(ticks=1, steps=self.steps)
+                    self.stats["step_s"] += time.perf_counter() - start
+                except Exception as e:  # noqa: BLE001 - fail what is in the slots, keep serving
+                    jobs = [j for j in self.owner if j is not None] + [j for g in groups for j in g[0]]
+                    self.owner = [None] * len(self.owner)
+                    self.active.zero_()
+                    self._fail(jobs, e)
 
     def health(self):
         with self.lock:
             return dict(slots_busy=sum(j is not None for j in self.owner), pending_windows=len(self.pending),
-                        pending_s=self.pending_s, **self.stats, config=self.config)
+                        pending_s=self.pending_s, ready_groups=len(self.ready), clock_s=time.perf_counter(),
+                        vram_releases=self.asr.releases,
+                        **self.stats, config=self.config)

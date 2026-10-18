@@ -45,7 +45,9 @@ def get_args():
                     help="refuse when this much audio is already waiting; 0 = never")
     ap.add_argument("--gpu-mem-gb", type=float, default=8, help="onnxruntime memory limit; 0 = none")
     ap.add_argument("--cuda-graph", type=int, default=1, help="1: replay the greedy steps as a CUDA graph")
-    ap.add_argument("--shrink-arena", type=int, default=0, help="1: onnxruntime frees its unused GPU memory after each run")
+    ap.add_argument("--vram-release-gb", type=float, default=0,
+                    help="when the GPU's used memory is over this, the next encoder run hands onnxruntime's free memory "
+                         "back to CUDA; 0 never does")
     a, unknown = ap.parse_known_args()
     if unknown:
         print(f"ignoring sherpa flags: {' '.join(unknown)}", file=sys.stderr, flush=True)
@@ -126,7 +128,7 @@ def main():
     a = get_args()
     t = time.perf_counter()
     asr = Transducer(model.ensure(), device=a.provider, gpu_mem_gb=a.gpu_mem_gb, num_threads=a.num_threads,
-                     shrink_arena=bool(a.shrink_arena))
+                     release_gb=a.vram_release_gb)
     engine = Engine(asr, num_slots=a.num_slots, steps=a.steps, max_seconds=a.max_utterance_length,
                     window_s=a.window_seconds, extra_s=a.window_extra,
                     admit_max=a.admit_max, admit_max_seconds=a.admit_max_seconds, max_pending_s=a.max_pending_seconds,

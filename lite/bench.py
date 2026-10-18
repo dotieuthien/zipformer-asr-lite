@@ -100,14 +100,14 @@ def start_server(name: str = Query("lite", pattern=r"^[A-Za-z0-9_.-]+$"), num_sl
                  admit_max: int = Query(16, ge=1, le=1024), admit_max_seconds: float = Query(240, gt=0),
                  max_pending_seconds: float = Query(120, ge=0),
                  gpu_mem_gb: float = Query(8, ge=0), num_threads: int = Query(2, ge=1, le=64),
-                 cuda_graph: int = Query(1, ge=0, le=1), shrink_arena: int = Query(0, ge=0, le=1)):
+                 cuda_graph: int = Query(1, ge=0, le=1), vram_release_gb: float = Query(0, ge=0)):
     if running("benchmark"):
         raise HTTPException(409, "Benchmark running")
     stop("server")
     config = dict(num_slots=num_slots, steps=steps, max_utterance_length=max_utterance_length,
                   window_seconds=window_seconds, window_extra=window_extra,
                   admit_max=admit_max, admit_max_seconds=admit_max_seconds, max_pending_seconds=max_pending_seconds,
-                  gpu_mem_gb=gpu_mem_gb, num_threads=num_threads, cuda_graph=cuda_graph, shrink_arena=shrink_arena)
+                  gpu_mem_gb=gpu_mem_gb, num_threads=num_threads, cuda_graph=cuda_graph, vram_release_gb=vram_release_gb)
     command = [sys.executable, "-u", "serve.py", f"--port={ASR_PORT}", f"--provider={PROVIDER}",
                *[f"--{k.replace('_', '-')}={v}" for k, v in config.items()]]
     folder = RESULTS / name
