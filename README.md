@@ -18,6 +18,16 @@ thuê theo giờ qua [VKong](https://vkong.tli-tech.com), do AI agent điều kh
 
 Chi tiết: [PHASE1.md](PHASE1.md).
 
+**Giai đoạn 2: bản lite (18/10/2026).**
+
+- Viết lại server bằng Python theo cách của vieneu lite: slot cố định, prefill một lần cho cả nhóm câu mới vào, vòng greedy
+  chạy trên GPU bằng CUDA graph, câu nào xong là trả ngay.
+- Audio dài được cắt thành cửa sổ 30 s rồi ghép lại, theo cách của icefall.
+- Kết quả: phục vụ được gấp 2.5–3 lần số người trong mốc 1 s, chữ giống hệt sherpa. Còn thua sherpa khi request rải đều và
+  tải cực cao; VRAM đã có trần nhưng chưa phẳng hoàn toàn.
+
+Chi tiết: [OPTIMIZATION.md](OPTIMIZATION.md).
+
 ## Kết quả
 
 Server C++ gốc, cấu hình mặc định, model Zipformer gốc tiếng Anh, một RTX 3060 12 GB:
@@ -72,3 +82,5 @@ vkong app stop zipformer-asr-baseline --yes                                     
 | [baseline/model.py](baseline/model.py), [baseline/audio.py](baseline/audio.py) | Tải model, binary C++, LibriSpeech; chọn bộ câu |
 | [baseline/results/gpu-20261017/](baseline/results/gpu-20261017/) | Số đo thô của lần đo trong PHASE1.md |
 | [experiments/baseline/](experiments/baseline/) | Chạy cả bộ, tải kết quả, tính bảng |
+| [lite/](lite/) | Bản lite: [serve.py](lite/serve.py), [zipformer_lite/](lite/zipformer_lite/), cùng bộ đo; số đo thô trong [lite/results/gpu-20261018/](lite/results/gpu-20261018/) |
+| [experiments/lite/](experiments/lite/) | Chạy cả bộ cho lite, giữ tunnel, tải kết quả, tính bảng so với sherpa |

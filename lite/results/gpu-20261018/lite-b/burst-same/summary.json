@@ -1,0 +1,2701 @@
+{
+  "mode": "burst",
+  "audio": "same",
+  "utterances": 55,
+  "audio_s": {
+    "min": 9.75,
+    "max": 10.25,
+    "mean": 9.996363636363636
+  },
+  "levels_requested": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    24,
+    32,
+    48,
+    64,
+    96,
+    128,
+    192,
+    256
+  ],
+  "repeats": 5,
+  "duration_s": 60.0,
+  "warmup_s": 10.0,
+  "sla_s": 1.0,
+  "procs": 8,
+  "seed": 0,
+  "url": "ws://127.0.0.1:6006",
+  "hostname": "75931ba6ba31",
+  "meta": {
+    "name": "lite-b",
+    "command": [
+      "/opt/conda/bin/python",
+      "-u",
+      "serve.py",
+      "--port=6006",
+      "--provider=cuda",
+      "--num-slots=32",
+      "--steps=8",
+      "--max-utterance-length=35.0",
+      "--admit-max=16",
+      "--admit-max-seconds=240.0",
+      "--max-pending-seconds=0.0",
+      "--gpu-mem-gb=8.0",
+      "--num-threads=2"
+    ],
+    "config": {
+      "num_slots": 32,
+      "steps": 8,
+      "max_utterance_length": 35.0,
+      "admit_max": 16,
+      "admit_max_seconds": 240.0,
+      "max_pending_seconds": 0.0,
+      "gpu_mem_gb": 8.0,
+      "num_threads": 2,
+      "provider": "cuda"
+    },
+    "check": {
+      "utt": "1188-133604-0041",
+      "audio_s": 10.07,
+      "latency_s": [
+        0.4694575300090946,
+        0.4022203809581697,
+        0.40021369996247813
+      ],
+      "text": "IT IS A GLEANER BRINGING DOWN HER ONE SHEAF OF CORN TO AN OLD WATER MILL ITSELF MOSSY IN RENT SCARCELY ABLE TO GET ITS STONES TO TURN",
+      "reference": "IT IS A GLEANER BRINGING DOWN HER ONE SHEAF OF CORN TO AN OLD WATERMILL ITSELF MOSSY AND RENT SCARCELY ABLE TO GET ITS STONES TO TURN"
+    }
+  },
+  "wer_alone": 0.019515477792732168,
+  "alone_latency_s": [
+    0.40526751201832667,
+    0.42322252702433616,
+    0.42024782398948446,
+    0.4474305009935051,
+    0.4213254709611647,
+    0.429480402963236,
+    0.41767408803571016,
+    0.43713104602647945,
+    0.4419350399984978,
+    0.4278008280089125,
+    0.44469262001803145,
+    0.43113945703953505,
+    0.42977605102350935,
+    0.4301114589907229,
+    0.4262408780050464,
+    0.4160867420141585,
+    0.4197997659794055,
+    0.41443028999492526,
+    0.39854447200195864,
+    0.42255440598819405,
+    0.41964433604152873,
+    0.4109250309993513,
+    0.4144603430177085,
+    0.40151450998382643,
+    0.42867624800419435,
+    0.4273309909622185,
+    0.4206386489677243,
+    0.3917715110001154,
+    0.4008376519777812,
+    0.4117518090060912,
+    0.4256598229985684,
+    0.41716168995480984,
+    0.4140301709994674,
+    0.4131856220192276,
+    0.42017118696821854,
+    0.43482346599921584,
+    0.4120000739931129,
+    0.4208997029927559,
+    0.4090273270267062,
+    0.3965431930264458,
+    0.42512652603909373,
+    0.4220970790483989,
+    0.4242457299842499,
+    0.4198371450183913,
+    0.4342892220010981,
+    0.42634581302991137,
+    0.41055148403393105,
+    0.4340758250327781,
+    0.4279538500122726,
+    0.412082256982103,
+    0.4225844939937815,
+    0.4215084679890424,
+    0.4081584180239588,
+    0.4273564930190332,
+    0.4193706939695403
+  ],
+  "reference": {
+    "1188-133604-0041": "IT IS A GLEANER BRINGING DOWN HER ONE SHEAF OF CORN TO AN OLD WATER MILL ITSELF MOSSY IN RENT SCARCELY ABLE TO GET ITS STONES TO TURN",
+    "121-121726-0010": "HOUSE CLEANING A DOMESTIC UPHEAVAL THAT MAKES IT EASY FOR THE GOVERNMENT TO ENLIST ALL THE SOLDIERS IT NEEDS",
+    "121-127105-0000": "IT WAS THIS OBSERVATION THAT DREW FROM DOUGLAS NOT IMMEDIATELY BUT LATER IN THE EVENING A REPLY THAT HAD THE INTERESTING CONSEQUENCE TO WHICH I CALL ATTENTION",
+    "1221-135766-0009": "AS TO ANY OTHER KIND OF DISCIPLINE WHETHER ADDRESSED TO HER MIND OR HEART LITTLE PEARL MIGHT OR MIGHT NOT BE WITHIN ITS REACH IN ACCORDANCE WITH THE CAPRICE THAT RULED THE MOMENT",
+    "1284-1180-0021": "I THINK THE NEXT GLASS CAP THE MAGICIAN MAKES WILL HAVE NEITHER BRAINS NOR HEART FOR THEN IT WILL NOT OBJECT TO CATCHING MICE AND MAY PROVE OF SOME USE TO US",
+    "1284-134647-0006": "BISHOPS VIRGINS AND EVEN SPOTLESS INFANTS WERE SUBJECTED TO THE DISGRACE OF A PUBLIC PENANCE BEFORE THEY COULD BE ADMITTED TO THE COMMUNION OF THE DONATISTS",
+    "1320-122612-0003": "HE OFTEN STOPPED TO EXAMINE THE TREES NOR DID HE CROSS A RIVULET WITHOUT ATTENTIVELY CONSIDERING THE QUANTITY THE VELOCITY AND THE COLOR OF ITS WATERS",
+    "1320-122612-0010": "SEE SAID UNCAS POINTING NORTH AND SOUTH AT THE EVIDENT MARKS OF THE BROAD TRAIL ON EITHER SIDE OF HIM THE DARK HAIR HAS GONE TOWARD THE FOREST",
+    "1320-122617-0010": "THE TASK WILL NOT BE DIFFICULT RETURNED DAVID HESITATING THOUGH I GREATLY FEAR YOUR PRESENCE WOULD RATHER INCREASE THAN MITIGATE HIS UNHAPPY FORTUNES",
+    "1320-122617-0011": "THE LODGE IN WHICH UNCAS WAS CONFINED WAS IN THE VERY CENTER OF THE VILLAGE AND IN A SITUATION PERHAPS MORE DIFFICULT THAN ANY OTHER TO APPROACH OR LEAVE WITHOUT OBSERVATION",
+    "1320-122617-0016": "THE CUNNING MAN IS AFRAID THAT HIS BREATH WILL BLOW UPON HIS BROTHERS AND TAKE AWAY THEIR COURAGE TOO CONTINUED DAVID IMPROVING THE HINT HE RECEIVED THEY MUST STAND FURTHER OFF",
+    "1580-141083-0029": "HE WAS IN THE MIDST OF THAT WHEN YOUR RETURN CAUSED HIM TO MAKE A VERY HURRIED RETREAT VERY HURRIED SINCE HE HAD NOT TIME TO REPLACE THE PAPERS WHICH WOULD TELL YOU THAT HE HAD BEEN THERE",
+    "1995-1826-0001": "THE SOUTH SHE HAD NOT THOUGHT OF SERIOUSLY AND YET KNOWING OF ITS DELIGHTFUL HOSPITALITY AND MILD CLIMATE SHE WAS NOT AVERSE TO CHARLESTON OR NEW ORLEANS",
+    "2094-142345-0057": "I KNOWS FARM IS IN BETTER ORDER THAN ANY OTHER WITHIN TEN MILES OF US AND AS FOR THE KITCHEN HE ADDED SMILING I DON'T BELIEVE THERE'S ONE IN THE KINGDOM TO BEAT IT",
+    "2094-142345-0059": "THIS MISSUS POYSER SAID BLUSHING AND BELIEVING THAT THE CAPTAIN WAS REALLY INTERESTED IN HER MILK PANS AND WOULD ADJUST HIS OPINION OF HER TO THE APPEARANCE OF HER DAIRY",
+    "2300-131720-0030": "THE PRINCIPLE EMPLOYED IN THE EDISON ELECTROLYTIC METRE IS THAT WHICH EXEMPLIFIES THE POWER OF ELECTRICITY TO DECOMPOSE A CHEMICAL SUBSTANCE",
+    "237-134493-0016": "ON EITHER SIDE OF THE ROAD FOR A MILE BEFORE YOU REACHED THE FOOT OF THE HILL STOOD TALL OSAGE ORANGE HEDGES THEIR GLOSSY GREEN MARKING OFF THE YELLOW FIELDS",
+    "260-123286-0002": "ALL MY DANGER AND SUFFERINGS WERE NEEDED TO STRIKE A SPARK OF HUMAN FEELING OUT OF HIM BUT NOW THAT I AM WELL HIS NATURE HAS RESUMED ITS SWAY",
+    "260-123288-0010": "ON THE MAST ALREADY I SEE THE LIGHT PLAY OF A LAMENT SAINT ELBO'S FIRE THE OUTSTRETCHED SAIL CATCHES NOT A BREATH OF WIND AND HANGS LIKE A SHEET OF LEAD",
+    "2830-3980-0007": "AS THE AMBASSADOR OF A GOVERNMENT IS HONORED FOR HIS OFFICE AND NOT FOR HIS PRIVATE PERSON SO THE MINISTER OF CHRIST SHOULD EXALT HIS OFFICE IN ORDER TO GAIN AUTHORITY AMONG MEN",
+    "2830-3980-0054": "THAT CHRIST IS VERY GOD IS APPARENT IN THAT PAUL ASCRIBES TO HIM DIVINE POWERS EQUALLY WITH THE FATHER AS FOR INSTANCE THE POWER TO DISPENSE GRACE AND PEACE",
+    "2961-960-0020": "AND HENCE WE FIND THE SAME SORT OF CLUMSINESS IN THE TIMAEUS OF PLATO WHICH CHARACTERIZES THE PHILOSOPHICAL POEM OF LUCRETIUS",
+    "3570-5695-0007": "THERE IS NO CLASS AND NO COUNTRY THAT HAS YIELDED SO ABJECTLY BEFORE THE PRESSURE OF PHYSICAL WANT AS TO DENY THEMSELVES ALL GRATIFICATION OF THIS HIGHER OR SPIRITUAL NEED",
+    "4077-13751-0002": "INSTEAD OF BUT SIX REGULARLY AFFILIATED MEMBERS AND AT MOST TWO SCORE OF ADHERENTS THE ORGANIZATION NUMBERS TO DAY MANY HUNDRED THOUSAND SOULS",
+    "4446-2271-0016": "HE WAS BEGINNING TO FEEL A KEEN INTEREST IN THE SLENDER BAREFOOT DONKEY GIRL WHO SLIPPED IN AND OUT OF THE PLAY SINGING LIKE SOME ONE WINDING THROUGH A HILLY FIELD",
+    "4970-29095-0003": "I HOPE THEE TOLD THE ELDERS THAT FATHER AND I ARE RESPONSIBLE FOR THE PIANO AND THAT MUCH AS THEE LOVES MUSIC THEE IS NEVER IN THE ROOM WHEN IT IS PLAYED",
+    "4970-29095-0027": "IT'S SUCH A CRUSH AT THE YEARLY MEETING AT ARCH STREET AND THEN THERE'S THE ROW OF SLEEK LOOKING YOUNG MEN WHO LIE IN THE CURBSTONE AND STARE AT US AS WE COME OUT",
+    "4992-41797-0013": "SHE MAKES EFFORT AFTER EFFORT TREMBLING WITH EAGERNESS AND WHEN SHE FAILS TO REPRODUCE WHAT SHE SEES SHE WORKS HERSELF INTO A FRENZY OF GRIEF AND DISAPPOINTMENT",
+    "5142-33396-0032": "THE FARMER SAT GLOOMILY ON THE BENCH AND WOULD NOT EAT AND YOU CANNOT WONDER FOR HE SAW US PUTTING POTFULS OF HIS GOOD BEEF AND BASKEY LOADS OF BREAD INTO OUR BIG MOUTHS",
+    "5639-40744-0020": "THUS DID THE HUMANE AND RIGHT MINDED FATHER COMFORT HIS UNHAPPY DAUGHTER AND HER MOTHER EMBRACING HER AGAIN DID ALL SHE COULD TO SOOTHE HER FEELINGS",
+    "5683-32865-0005": "BUT HER GREETING TO CAPTAIN LAKE WAS MORE THAN USUALLY HAUGHTY AND FROZEN AND HER FEATURES I FANCIED PARTICULARLY PROUD AND PALE",
+    "5683-32865-0009": "AND HE PLACED IT IN THAT GENTLEMAN'S FINGERS WHO NOW TOOK HIS TURN AT THE LAMP AND CONTEMPLATED THE LITTLE PARALLELOGRAM WITH A GLEAM OF SLY AMUSEMENT",
+    "5683-32866-0013": "THERE WAS A BRIGHT MOONLIGHT BROKEN BY THE SHADOWS OF OVERHANGING BOUGHS AND WITHERED LEAVES AND THE MOTTLED LIGHTS AND SHADOWS GLIDED ODDLY ACROSS HIS PALE FEATURES",
+    "5683-32866-0024": "I SHA'N'T TROUBLE YOU ABOUT MY TRAIN OF THOUGHTS OR FANCIES BUT I BEGAN TO FEEL VERY LIKE A GENTLEMAN IN A GHOST STORY WATCHING EXPERIMENTALLY IN A HAUNTED CHAMBER",
+    "5683-32879-0016": "AND THE WAN ORACLE HAVING SPOKEN SHE SAT DOWN IN THE SAME SORT OF ABSTRACTION AGAIN BESIDE DORCAS AND SHE LOOKED FULL IN HER COUSIN'S EYES",
+    "672-122797-0004": "IN WINTER WHEN THE SNOW LAY GLITTERING ON THE GROUND A HARE WOULD OFTEN COME LEAPING ALONG AND JUMP RIGHT OVER THE LITTLE TREE",
+    "6829-68771-0010": "THE FAIRVIEW BAND WAS ENGAGED TO DISCOURSE AS MUCH HARMONY AS IT COULD PRODUCE AND THE RESOURCES OF THE GREAT HOUSE WERE TAXED TO ENTERTAIN THE GUESTS",
+    "6930-75918-0016": "YES I NEED REPOSE MANY THINGS HAVE AGITATED ME TO DAY BOTH IN MIND AND BODY WHEN YOU RETURN TO MORROW I SHALL NO LONGER BE THE SAME MAN",
+    "6930-76324-0028": "WELL I'M CONVINCED THAT THE BOARDED UP HOUSE MYSTERY HAPPENED NOT EARLIER THAN APRIL SIXTEENTH EIGHTEEN SIXTY ONE AND PROBABLY NOT MUCH LATER",
+    "7127-75946-0012": "THE NEWS CIRCULATED WITH THE RAPIDITY OF LIGHTNING DURING ITS PROGRESS IT KINDLED EVERY VARIETY OF COQUETRY DESIRE AND WILD AMBITION",
+    "7127-75946-0014": "THE QUEENS HAD TAKEN THEIR SEATS UPON A MAGNIFICENT DAIS OR PLATFORM ERECTED UPON THE BORDERS OF THE LAKE IN A THEATRE OF WONDERFUL ELEGANCE OF CONSTRUCTION",
+    "7127-75947-0014": "FORGIVE ME I HARDLY KNOW WHAT I AM SAYING A THOUSAND TIMES FORGIVE ME MADAME WAS RIGHT QUITE RIGHT THIS BRUTAL EXILE HAS COMPLETELY TURNED MY BRAIN",
+    "7127-75947-0039": "IN FACT THE SOUND OF MADAMES AND THE QUEEN'S CARRIAGES COULD BE HEARD IN THE DISTANCE UPON THE HARD DRY GROUND OF THE ROADS FOLLOWED BY THE MOUNTAIN CAVALIERS",
+    "7176-88083-0011": "IN FACT HE HAD JUST FINISHED IT THE LAST OF THE TROUT'S TAIL HAD JUST VANISHED WITH A SPASM DOWN HIS STRAINED GULLET WHEN THE BAFFLED HAWK CAUGHT SIGHT OF HIM AND SWOOPED",
+    "7729-102255-0024": "THE FREE STATE MEN CLUNG TO THEIR PRAIRIE TOWNS AND PRAIRIE RAVINES WITH ALL THE OBSTINACY AND COURAGE OF TRUE DEFENDERS OF THEIR HOMES AND FIRESIDES",
+    "8224-274381-0007": "BY QUICK MARCHES THROUGH THESE INACCESSIBLE MOUNTAINS THAT GENERAL FREED HIMSELF FROM THE SUPERIOR FORCES OF THE COVENANTERS",
+    "8224-274384-0002": "THEY INFORMED THE ENGLISH PARLIAMENT OF THIS UNEXPECTED INCIDENT AND ASSURED THEM THAT THEY HAD ENTERED INTO NO PRIVATE TREATY WITH THE KING",
+    "8455-210777-0038": "THEREFORE I FEEL MYSELF QUITE ABLE AS PRESIDENT OF THIS REPUBLIC TO RECEIVE YOU WITH THE COURTESY DUE TO THE SERVANTS OF A FRIENDLY ALLY",
+    "8463-294825-0003": "NEMO BUILDS A FABULOUS FUTURE SUBMARINE THE NAUTILUS THEN CONDUCTS AN UNDERWATER CAMPAIGN OF VENGEANCE AGAINST HIS IMPERIALIST OPPRESSOR",
+    "8555-284449-0012": "I'LL GLADLY DO THAT PROMISED THE NEW BOOLOOROO AND I'LL FEED THE HONOURABLE GOAT ALL THE SHAVINGS AND LEATHER AND TIN CANS HE CAN EAT BESIDES THE GRASS",
+    "8555-292519-0006": "THE PLEASANT GRAVEYARD OF MY SOUL WITH SENTIMENTAL CYPRESS TREES AND FLOWERS IS FILLED THAT I MAY STROLL IN MEDITATION AT MY EASE",
+    "908-157963-0012": "BUT THOU IS LIKE A FAINT CLOUD KINDLED AT THE RISING SUN I VANISH FROM MY PEARLY THRONE AND WHO SHALL FIND MY PLACE",
+    "908-157963-0020": "TILL WE ARISE LINK'D IN A GOLDEN BAND AND NEVER PART BUT WALK UNITED BEARING FOOD TO ALL OUR TENDER FLOWERS",
+    "908-157963-0021": "LIVES NOT ALONE NOR OF ITSELF FEAR NOT AND I WILL CALL THE WEAK WORM FROM ITS LOWLY BED AND THOU SHALT HEAR ITS VOICE",
+    "908-31957-0008": "NAY I RATHER THRILLED DISTRUSTING EVERY LIGHT THAT SEEMED TO GILD THE ONWARD PATH AND FEAR TO OVERLEAN A FINGER EVEN"
+  },
+  "gpu_before": {
+    "timestamp": "2026/10/18 01:44:27.864",
+    "uuid": "GPU-17003539-7e1c-a01d-d78b-d0f3e20544a0",
+    "name": "NVIDIA GeForce RTX 3060",
+    "driver_version": "595.104.02",
+    "pstate": "P2",
+    "utilization.gpu": "20",
+    "memory.used": "4839",
+    "memory.total": "12288",
+    "power.draw": "49.31",
+    "power.limit": "150.00",
+    "temperature.gpu": "50",
+    "clocks.current.graphics": "1792",
+    "clocks.current.memory": "7301"
+  },
+  "levels": [
+    {
+      "concurrency": 1,
+      "n": 5,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 0.41310830699512735,
+      "p90_s": 0.42106136101065206,
+      "p99_s": 0.42329626800259573,
+      "max_s": 0.4235445910017006,
+      "rtf_p50": 0.04162301164403369,
+      "rtf_p90": 0.04185750604184795,
+      "audio_s_per_s": 24.006670003777817,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.043795620437956206,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 3,
+          "p50_s": 0.4110272399848327,
+          "p90_s": 0.4126920935930684
+        },
+        "10-15": {
+          "n": 2,
+          "p50_s": 0.4204405535128899,
+          "p90_s": 0.42292378350393844
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 5,
+      "batch_size_mean": 1.0,
+      "gpu_util_mean": 10.0,
+      "gpu_util_max": 10.0,
+      "gpu_mem_max_mb": 4839.0,
+      "cpu_util_mean": 2.9743990576620254,
+      "server_cpu_cores_mean": 0.9964419278701493,
+      "server_cpu_cores_max": 1.000259648466143,
+      "client_cpu_cores": 1.127407500520768,
+      "reject_rate": 0.0,
+      "passed": true,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 2,
+      "n": 10,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 0.434216960973572,
+      "p90_s": 0.4434287087933626,
+      "p99_s": 0.44892463010910433,
+      "max_s": 0.44953528803307563,
+      "rtf_p50": 0.04328581448515187,
+      "rtf_p90": 0.04460904186122833,
+      "audio_s_per_s": 45.40489468648584,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.02214022140221402,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 5,
+          "p50_s": 0.42822740197880194,
+          "p90_s": 0.43494380101328717
+        },
+        "10-15": {
+          "n": 5,
+          "p50_s": 0.4379529900033958,
+          "p90_s": 0.4468212528154254
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 5,
+      "batch_size_mean": 2.0,
+      "gpu_util_mean": 10.0,
+      "gpu_util_max": 10.0,
+      "gpu_mem_max_mb": 4839.0,
+      "cpu_util_mean": 4.842607947741444,
+      "server_cpu_cores_mean": 0.9973933192339843,
+      "server_cpu_cores_max": 1.0064111697648472,
+      "client_cpu_cores": 1.9045502972854793,
+      "reject_rate": 0.0,
+      "passed": true,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 4,
+      "n": 20,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 0.43211095698643476,
+      "p90_s": 0.4428873480996117,
+      "p99_s": 0.44322755770990624,
+      "max_s": 0.44327821797924116,
+      "rtf_p50": 0.042788680327128806,
+      "rtf_p90": 0.04364293488567455,
+      "audio_s_per_s": 91.80635305047956,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.019097222222222224,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 8,
+          "p50_s": 0.4203991629765369,
+          "p90_s": 0.42710591102950274
+        },
+        "10-15": {
+          "n": 12,
+          "p50_s": 0.4343171994842123,
+          "p90_s": 0.44299778088461605
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 5,
+      "batch_size_mean": 4.0,
+      "gpu_util_mean": 26.5,
+      "gpu_util_max": 43.0,
+      "gpu_mem_max_mb": 4839.0,
+      "cpu_util_mean": 3.434098062343426,
+      "server_cpu_cores_mean": 0.9966935434064405,
+      "server_cpu_cores_max": 0.9986438095238032,
+      "client_cpu_cores": 2.893500817474111,
+      "reject_rate": 0.0,
+      "passed": true,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 8,
+      "n": 40,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 0.4701576289953664,
+      "p90_s": 0.48388170935213565,
+      "p99_s": 0.4857256573752966,
+      "max_s": 0.4858067290042527,
+      "rtf_p50": 0.04762542089722501,
+      "rtf_p90": 0.048079689967635265,
+      "audio_s_per_s": 165.15839494082223,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.017009847806624886,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 21,
+          "p50_s": 0.4689063500263728,
+          "p90_s": 0.46965530898887664
+        },
+        "10-15": {
+          "n": 19,
+          "p50_s": 0.48171109799295664,
+          "p90_s": 0.48548634740291163
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 5,
+      "batch_size_mean": 8.0,
+      "gpu_util_mean": 51.5,
+      "gpu_util_max": 65.0,
+      "gpu_mem_max_mb": 4839.0,
+      "cpu_util_mean": 3.408592347551238,
+      "server_cpu_cores_mean": 1.000545866247694,
+      "server_cpu_cores_max": 1.0009539476824263,
+      "client_cpu_cores": 3.7221173254956086,
+      "reject_rate": 0.0,
+      "passed": true,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 16,
+      "n": 80,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 0.5746746500080917,
+      "p90_s": 0.5973061473749113,
+      "p99_s": 0.6014312962302938,
+      "max_s": 0.6016655960120261,
+      "rtf_p50": 0.05774985796705975,
+      "rtf_p90": 0.05932152890719261,
+      "audio_s_per_s": 270.668001557417,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.019134396355353075,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 36,
+          "p50_s": 0.5697459595103282,
+          "p90_s": 0.5815555505105294
+        },
+        "10-15": {
+          "n": 44,
+          "p50_s": 0.5841280200111214,
+          "p90_s": 0.5991402487852611
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 9,
+      "batch_size_mean": 8.88888888888889,
+      "gpu_util_mean": 38.0,
+      "gpu_util_max": 97.0,
+      "gpu_mem_max_mb": 4839.0,
+      "cpu_util_mean": 3.462213445986285,
+      "server_cpu_cores_mean": 0.9997810937636772,
+      "server_cpu_cores_max": 1.0108333216484162,
+      "client_cpu_cores": 3.274651438421453,
+      "reject_rate": 0.0,
+      "passed": true,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 24,
+      "n": 120,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 0.7127534384781029,
+      "p90_s": 0.7301468271645717,
+      "p99_s": 0.740197668261244,
+      "max_s": 0.7406290000071749,
+      "rtf_p50": 0.07158839802358746,
+      "rtf_p90": 0.07279917447908174,
+      "audio_s_per_s": 326.2874374496022,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.019734813444341658,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 55,
+          "p50_s": 0.7070820850203745,
+          "p90_s": 0.7159422722179443
+        },
+        "10-15": {
+          "n": 65,
+          "p50_s": 0.7215421479777433,
+          "p90_s": 0.7337878853664733
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 15,
+      "batch_size_mean": 8.0,
+      "gpu_util_mean": 42.0,
+      "gpu_util_max": 96.0,
+      "gpu_mem_max_mb": 4841.0,
+      "cpu_util_mean": 3.3870800831754444,
+      "server_cpu_cores_mean": 1.0001973627493088,
+      "server_cpu_cores_max": 1.0068706574654023,
+      "client_cpu_cores": 2.5280449986471907,
+      "reject_rate": 0.0,
+      "passed": true,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 32,
+      "n": 160,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 0.7874117925239261,
+      "p90_s": 0.8175814056943637,
+      "p99_s": 0.8277853946614777,
+      "max_s": 0.828593986982014,
+      "rtf_p50": 0.0787559741350221,
+      "rtf_p90": 0.08147865790628905,
+      "audio_s_per_s": 392.53824626513415,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.019337016574585635,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 74,
+          "p50_s": 0.7806632664869539,
+          "p90_s": 0.8025075896992349
+        },
+        "10-15": {
+          "n": 86,
+          "p50_s": 0.7954570695001166,
+          "p90_s": 0.8204567814827897
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 15,
+      "batch_size_mean": 10.666666666666666,
+      "gpu_util_mean": 55.0,
+      "gpu_util_max": 100.0,
+      "gpu_mem_max_mb": 4841.0,
+      "cpu_util_mean": 3.302190215816802,
+      "server_cpu_cores_mean": 1.0027291567597723,
+      "server_cpu_cores_max": 1.0062816558930188,
+      "client_cpu_cores": 2.7803899651872483,
+      "reject_rate": 0.0,
+      "passed": true,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 48,
+      "n": 240,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 0.8981768645171542,
+      "p90_s": 1.1928413278947119,
+      "p99_s": 1.2136960027145687,
+      "max_s": 1.2141569170053117,
+      "rtf_p50": 0.08932645683965583,
+      "rtf_p90": 0.11983298936614076,
+      "audio_s_per_s": 394.79329574742394,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.019478527607361962,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 108,
+          "p50_s": 0.8571664379851427,
+          "p90_s": 1.192945883696666
+        },
+        "10-15": {
+          "n": 132,
+          "p50_s": 0.9127559045155067,
+          "p90_s": 1.1907261984131765
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 28,
+      "batch_size_mean": 8.571428571428571,
+      "gpu_util_mean": 47.833333333333336,
+      "gpu_util_max": 91.0,
+      "gpu_mem_max_mb": 4841.0,
+      "cpu_util_mean": 2.5243533584858002,
+      "server_cpu_cores_mean": 1.011406088890282,
+      "server_cpu_cores_max": 1.0185404787604344,
+      "client_cpu_cores": 1.6545251011514013,
+      "reject_rate": 0.0,
+      "passed": false,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 64,
+      "n": 320,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 1.209167928493116,
+      "p90_s": 1.4036485517746768,
+      "p99_s": 1.4257900947815505,
+      "max_s": 1.4264746879925951,
+      "rtf_p50": 0.1199305429841689,
+      "rtf_p90": 0.1407057626847499,
+      "audio_s_per_s": 448.84738396644406,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.01933479111520313,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 146,
+          "p50_s": 0.9207826560304966,
+          "p90_s": 1.3919259240210522
+        },
+        "10-15": {
+          "n": 174,
+          "p50_s": 1.3581183110072743,
+          "p90_s": 1.4125660928955768
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 34,
+      "batch_size_mean": 9.411764705882353,
+      "gpu_util_mean": 55.0,
+      "gpu_util_max": 100.0,
+      "gpu_mem_max_mb": 4841.0,
+      "cpu_util_mean": 3.3418827609630313,
+      "server_cpu_cores_mean": 1.0157316367156848,
+      "server_cpu_cores_max": 1.030732042529786,
+      "client_cpu_cores": 1.6178014595351653,
+      "reject_rate": 0.0,
+      "passed": false,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 96,
+      "n": 480,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 1.5240182844863739,
+      "p90_s": 2.072621337871533,
+      "p99_s": 2.106603472665883,
+      "max_s": 2.14540992397815,
+      "rtf_p50": 0.15175751223222037,
+      "rtf_p90": 0.20830643627578505,
+      "audio_s_per_s": 452.34585658745755,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.019300269127258747,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 221,
+          "p50_s": 1.4813847889890894,
+          "p90_s": 2.067910456971731
+        },
+        "10-15": {
+          "n": 259,
+          "p50_s": 1.6090912119834684,
+          "p90_s": 2.079355626378674
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 58,
+      "batch_size_mean": 8.275862068965518,
+      "gpu_util_mean": 58.7,
+      "gpu_util_max": 100.0,
+      "gpu_mem_max_mb": 4841.0,
+      "cpu_util_mean": 3.6194692110211735,
+      "server_cpu_cores_mean": 1.0213068193511776,
+      "server_cpu_cores_max": 1.0410448997288229,
+      "client_cpu_cores": 1.1298327999679416,
+      "reject_rate": 0.0,
+      "passed": false,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 128,
+      "n": 640,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 1.949070697533898,
+      "p90_s": 2.803149506880436,
+      "p99_s": 2.848199235877837,
+      "max_s": 2.8493243270204403,
+      "rtf_p50": 0.19494158973134154,
+      "rtf_p90": 0.28020056810800364,
+      "audio_s_per_s": 447.203681793694,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.019493627083453487,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 293,
+          "p50_s": 2.062851953029167,
+          "p90_s": 2.7818535846075974
+        },
+        "10-15": {
+          "n": 347,
+          "p50_s": 1.8572102210018784,
+          "p90_s": 2.813368549000006
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 88,
+      "batch_size_mean": 7.2727272727272725,
+      "gpu_util_mean": 40.42857142857143,
+      "gpu_util_max": 98.0,
+      "gpu_mem_max_mb": 4843.0,
+      "cpu_util_mean": 3.444930290301616,
+      "server_cpu_cores_mean": 1.0268092163796734,
+      "server_cpu_cores_max": 1.0654097112524608,
+      "client_cpu_cores": 0.879565588986337,
+      "reject_rate": 0.0,
+      "passed": false,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 192,
+      "n": 960,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 2.7079135439998936,
+      "p90_s": 4.2269459973962515,
+      "p99_s": 4.328344504772104,
+      "max_s": 4.343403577979188,
+      "rtf_p50": 0.26912623580656647,
+      "rtf_p90": 0.4221089778264199,
+      "audio_s_per_s": 439.77544047390677,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.019483269800931808,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 436,
+          "p50_s": 2.4550269140163437,
+          "p90_s": 4.206931307999184
+        },
+        "10-15": {
+          "n": 524,
+          "p50_s": 2.8588909399986733,
+          "p90_s": 4.236790548305725
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 144,
+      "batch_size_mean": 6.666666666666667,
+      "gpu_util_mean": 45.523809523809526,
+      "gpu_util_max": 95.0,
+      "gpu_mem_max_mb": 4843.0,
+      "cpu_util_mean": 3.7646065293629154,
+      "server_cpu_cores_mean": 1.0279775572252354,
+      "server_cpu_cores_max": 1.0912772024640756,
+      "client_cpu_cores": 0.7229573155091187,
+      "reject_rate": 0.0,
+      "passed": false,
+      "gpu_idle_before": true
+    },
+    {
+      "concurrency": 256,
+      "n": 1280,
+      "rejected": 0,
+      "errors": 0,
+      "error_samples": [],
+      "metric": "latency_s",
+      "p50_s": 3.4611732190242037,
+      "p90_s": 5.522790438280216,
+      "p99_s": 5.749839477993082,
+      "max_s": 5.79027718200814,
+      "rtf_p50": 0.34641723556393633,
+      "rtf_p90": 0.5548807166153696,
+      "audio_s_per_s": 443.24567712247386,
+      "offered_audio_s_per_s": null,
+      "match": 1.0,
+      "wer": 0.019503033805258595,
+      "by_length": {
+        "0-5": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "5-10": {
+          "n": 580,
+          "p50_s": 3.4611732190242037,
+          "p90_s": 5.505814990599174
+        },
+        "10-15": {
+          "n": 700,
+          "p50_s": 3.460197504988173,
+          "p90_s": 5.597360557259526
+        },
+        "15-20": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        },
+        "20-40": {
+          "n": 0,
+          "p50_s": null,
+          "p90_s": null
+        }
+      },
+      "batches": 203,
+      "batch_size_mean": 6.305418719211823,
+      "gpu_util_mean": 51.2962962962963,
+      "gpu_util_max": 100.0,
+      "gpu_mem_max_mb": 4845.0,
+      "cpu_util_mean": 1.9699214695073335,
+      "server_cpu_cores_mean": 1.0274952172465412,
+      "server_cpu_cores_max": 1.1294429271977258,
+      "client_cpu_cores": 0.5839964131329981,
+      "reject_rate": 0.0,
+      "passed": false,
+      "gpu_idle_before": true
+    }
+  ],
+  "monitor": [
+    {
+      "t": 1792287868.8750706,
+      "cpu_util": 1.540810660744031,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287869.9217842,
+      "cpu_util": 1.8326693227091633,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287870.9654472,
+      "cpu_util": 1.6232038318254391,
+      "proc_cpu_cores": 0.00958163675572747,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287872.0099108,
+      "cpu_util": 5.3023255813953485,
+      "proc_cpu_cores": 0.5074374851339881,
+      "gpu_util": 17.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287873.0576386,
+      "cpu_util": 2.8779840848806364,
+      "proc_cpu_cores": 0.9926242072741556,
+      "gpu_util": 10.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287874.107366,
+      "cpu_util": 3.070814030443415,
+      "proc_cpu_cores": 1.000259648466143,
+      "gpu_util": 10.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287875.1523461,
+      "cpu_util": 2.0356572645023947,
+      "proc_cpu_cores": 0.29665638138939987,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287876.193458,
+      "cpu_util": 1.5881489390097425,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287877.2374313,
+      "cpu_util": 1.650911995739582,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287878.2851784,
+      "cpu_util": 6.866383881230116,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287879.3778806,
+      "cpu_util": 6.937890575181737,
+      "proc_cpu_cores": 0.9883754687031213,
+      "gpu_util": 10.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287880.431128,
+      "cpu_util": 2.747325320301149,
+      "proc_cpu_cores": 1.0064111697648472,
+      "gpu_util": 10.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287881.4775577,
+      "cpu_util": 2.15311004784689,
+      "proc_cpu_cores": 0.9269615159930101,
+      "gpu_util": 10.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287882.5358498,
+      "cpu_util": 0.14450867052023122,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287883.6135685,
+      "cpu_util": 0.7223010447568683,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287884.666407,
+      "cpu_util": 2.006071004355286,
+      "proc_cpu_cores": 0.009498132327879584,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287885.7300215,
+      "cpu_util": 10.559979114998042,
+      "proc_cpu_cores": 0.27265521095365614,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287886.8257816,
+      "cpu_util": 3.8984126984126983,
+      "proc_cpu_cores": 0.9947432772890777,
+      "gpu_util": 43.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 52.0
+    },
+    {
+      "t": 1792287887.8972347,
+      "cpu_util": 2.969783426274154,
+      "proc_cpu_cores": 0.9986438095238032,
+      "gpu_util": 10.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 51.0
+    },
+    {
+      "t": 1792287888.9444463,
+      "cpu_util": 2.9056653841050815,
+      "proc_cpu_cores": 0.649343427306371,
+      "gpu_util": 10.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 51.0
+    },
+    {
+      "t": 1792287889.993447,
+      "cpu_util": 1.695364238410596,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287891.0434256,
+      "cpu_util": 1.6013763896241398,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287892.1718686,
+      "cpu_util": 5.410723069355632,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 50.0
+    },
+    {
+      "t": 1792287893.6826477,
+      "cpu_util": 7.236116219198235,
+      "proc_cpu_cores": 0.569242701249726,
+      "gpu_util": 86.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 53.0
+    },
+    {
+      "t": 1792287894.7525003,
+      "cpu_util": 3.6127355425601038,
+      "proc_cpu_cores": 1.0001377848129618,
+      "gpu_util": 65.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 53.0
+    },
+    {
+      "t": 1792287895.8014996,
+      "cpu_util": 3.204449152542373,
+      "proc_cpu_cores": 1.0009539476824263,
+      "gpu_util": 38.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 53.0
+    },
+    {
+      "t": 1792287896.8516722,
+      "cpu_util": 6.254140718166159,
+      "proc_cpu_cores": 0.4189787599412702,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 52.0
+    },
+    {
+      "t": 1792287897.9052374,
+      "cpu_util": 0.5146476642913698,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 51.0
+    },
+    {
+      "t": 1792287898.964138,
+      "cpu_util": 0.24931111402703057,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 51.0
+    },
+    {
+      "t": 1792287900.0719786,
+      "cpu_util": 6.936271441091774,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 51.0
+    },
+    {
+      "t": 1792287901.4023168,
+      "cpu_util": 6.546251827103779,
+      "proc_cpu_cores": 0.6239014825327563,
+      "gpu_util": 40.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 52.0
+    },
+    {
+      "t": 1792287902.4587185,
+      "cpu_util": 3.4905163329820863,
+      "proc_cpu_cores": 0.9939400614326279,
+      "gpu_util": 8.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 52.0
+    },
+    {
+      "t": 1792287903.5469296,
+      "cpu_util": 3.7453662277898503,
+      "proc_cpu_cores": 1.0108333216484162,
+      "gpu_util": 9.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 53.0
+    },
+    {
+      "t": 1792287904.5926077,
+      "cpu_util": 3.1507577771869184,
+      "proc_cpu_cores": 0.994569898209987,
+      "gpu_util": 97.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 57.0
+    },
+    {
+      "t": 1792287905.641217,
+      "cpu_util": 2.823810155110699,
+      "proc_cpu_cores": 0.2288745769278535,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 52.0
+    },
+    {
+      "t": 1792287906.7072356,
+      "cpu_util": 1.5647411657321684,
+      "proc_cpu_cores": 0.009380699524913784,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 52.0
+    },
+    {
+      "t": 1792287907.751634,
+      "cpu_util": 1.5427583455246707,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 52.0
+    },
+    {
+      "t": 1792287908.8715298,
+      "cpu_util": 10.310682015100879,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4839.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 51.0
+    },
+    {
+      "t": 1792287909.9733274,
+      "cpu_util": 4.4284632853898565,
+      "proc_cpu_cores": 0.8622273425033837,
+      "gpu_util": 80.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 57.0
+    },
+    {
+      "t": 1792287911.0703974,
+      "cpu_util": 6.686968658799644,
+      "proc_cpu_cores": 0.9935555809099129,
+      "gpu_util": 21.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 54.0
+    },
+    {
+      "t": 1792287912.1231642,
+      "cpu_util": 1.7833553500660502,
+      "proc_cpu_cores": 1.0068706574654023,
+      "gpu_util": 9.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 53.0
+    },
+    {
+      "t": 1792287913.1829884,
+      "cpu_util": 1.690916240660637,
+      "proc_cpu_cores": 1.0001658498726116,
+      "gpu_util": 96.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287914.2341633,
+      "cpu_util": 2.289571201694018,
+      "proc_cpu_cores": 0.9798559882892683,
+      "gpu_util": 9.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 54.0
+    },
+    {
+      "t": 1792287915.2911477,
+      "cpu_util": 1.645169781521453,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 53.0
+    },
+    {
+      "t": 1792287916.3424892,
+      "cpu_util": 1.5860428231562251,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 53.0
+    },
+    {
+      "t": 1792287917.3927312,
+      "cpu_util": 1.5085351329892815,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 52.0
+    },
+    {
+      "t": 1792287918.440344,
+      "cpu_util": 13.526378421261404,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 52.0
+    },
+    {
+      "t": 1792287919.5255058,
+      "cpu_util": 4.021001408631067,
+      "proc_cpu_cores": 0.8662303619599504,
+      "gpu_util": 9.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 53.0
+    },
+    {
+      "t": 1792287920.6205359,
+      "cpu_util": 3.2483187412764876,
+      "proc_cpu_cores": 0.995406455501105,
+      "gpu_util": 64.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792287921.6744292,
+      "cpu_util": 3.2032691800685473,
+      "proc_cpu_cores": 1.0057943931576465,
+      "gpu_util": 100.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287922.7606988,
+      "cpu_util": 3.416069600818833,
+      "proc_cpu_cores": 1.0034341224873187,
+      "gpu_util": 47.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 56.0
+    },
+    {
+      "t": 1792287923.833957,
+      "cpu_util": 3.341103341103341,
+      "proc_cpu_cores": 1.0062816558930188,
+      "gpu_util": 9.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 55.0
+    },
+    {
+      "t": 1792287924.9072223,
+      "cpu_util": 3.2755049197307096,
+      "proc_cpu_cores": 0.5217721961586577,
+      "gpu_util": 4.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 55.0
+    },
+    {
+      "t": 1792287925.9578922,
+      "cpu_util": 1.8109715796430932,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 54.0
+    },
+    {
+      "t": 1792287927.0071905,
+      "cpu_util": 1.775539949648867,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 53.0
+    },
+    {
+      "t": 1792287928.0719616,
+      "cpu_util": 6.558018252933508,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 53.0
+    },
+    {
+      "t": 1792287929.4736426,
+      "cpu_util": 6.833283744917187,
+      "proc_cpu_cores": 0.6492204965542231,
+      "gpu_util": 95.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 57.0
+    },
+    {
+      "t": 1792287930.5328975,
+      "cpu_util": 6.7638560546361965,
+      "proc_cpu_cores": 1.0007034334142755,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 56.0
+    },
+    {
+      "t": 1792287931.5875394,
+      "cpu_util": 2.238609428496181,
+      "proc_cpu_cores": 1.014562323993572,
+      "gpu_util": 87.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792287932.6567574,
+      "cpu_util": 1.7808397244248018,
+      "proc_cpu_cores": 1.010084080608745,
+      "gpu_util": 91.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1942.0,
+      "gpu_temp_c": 57.0
+    },
+    {
+      "t": 1792287933.7132657,
+      "cpu_util": 1.7887675917401027,
+      "proc_cpu_cores": 1.0033049407207857,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 56.0
+    },
+    {
+      "t": 1792287934.7678573,
+      "cpu_util": 2.846599894570374,
+      "proc_cpu_cores": 1.0146107208274115,
+      "gpu_util": 37.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287935.81838,
+      "cpu_util": 3.267627993120783,
+      "proc_cpu_cores": 1.0185404787604344,
+      "gpu_util": 48.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 56.0
+    },
+    {
+      "t": 1792287936.8706627,
+      "cpu_util": 3.223675518562558,
+      "proc_cpu_cores": 1.0073339884307433,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287937.922291,
+      "cpu_util": 2.8816920026437542,
+      "proc_cpu_cores": 0.3233081341029843,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 56.0
+    },
+    {
+      "t": 1792287938.9486144,
+      "cpu_util": 1.5703262488154868,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 55.0
+    },
+    {
+      "t": 1792287940.0011477,
+      "cpu_util": 1.5447583839450754,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 54.0
+    },
+    {
+      "t": 1792287941.0716105,
+      "cpu_util": 9.311059311059312,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 54.0
+    },
+    {
+      "t": 1792287942.410657,
+      "cpu_util": 6.2973337483141405,
+      "proc_cpu_cores": 0.7468000672320617,
+      "gpu_util": 73.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792287943.4667933,
+      "cpu_util": 3.3136094674556213,
+      "proc_cpu_cores": 0.9941897941580065,
+      "gpu_util": 2.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 56.0
+    },
+    {
+      "t": 1792287944.5175948,
+      "cpu_util": 3.3474464143953426,
+      "proc_cpu_cores": 1.0182703242583229,
+      "gpu_util": 10.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 56.0
+    },
+    {
+      "t": 1792287945.5704012,
+      "cpu_util": 2.9955133280548956,
+      "proc_cpu_cores": 1.006832806813732,
+      "gpu_util": 68.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792287946.6167254,
+      "cpu_util": 3.465675209135573,
+      "proc_cpu_cores": 1.0130702761380526,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 57.0
+    },
+    {
+      "t": 1792287947.6742263,
+      "cpu_util": 3.2207177599579335,
+      "proc_cpu_cores": 1.030732042529786,
+      "gpu_util": 100.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287948.72421,
+      "cpu_util": 6.716811823700184,
+      "proc_cpu_cores": 1.0095394431046143,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792287949.7985442,
+      "cpu_util": 1.8367610917087052,
+      "proc_cpu_cores": 1.0238900118151317,
+      "gpu_util": 90.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 57.0
+    },
+    {
+      "t": 1792287950.8503542,
+      "cpu_util": 1.8102536997885834,
+      "proc_cpu_cores": 1.0077865523501528,
+      "gpu_util": 93.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1942.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792287951.900815,
+      "cpu_util": 2.2889653347446415,
+      "proc_cpu_cores": 0.685413477041964,
+      "gpu_util": 10.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 57.0
+    },
+    {
+      "t": 1792287952.9503314,
+      "cpu_util": 0.15887726731100224,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 56.0
+    },
+    {
+      "t": 1792287954.015742,
+      "cpu_util": 1.2389149713093375,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 56.0
+    },
+    {
+      "t": 1792287955.0715568,
+      "cpu_util": 4.677440546577322,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 55.0
+    },
+    {
+      "t": 1792287956.6787891,
+      "cpu_util": 8.011766741650804,
+      "proc_cpu_cores": 0.5910782037853398,
+      "gpu_util": 9.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1957.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792287957.7346804,
+      "cpu_util": 3.711503027112398,
+      "proc_cpu_cores": 1.0133619103810532,
+      "gpu_util": 81.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287958.8239942,
+      "cpu_util": 3.534064812452156,
+      "proc_cpu_cores": 1.0465304460820335,
+      "gpu_util": 87.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1942.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792287959.874843,
+      "cpu_util": 3.146067415730337,
+      "proc_cpu_cores": 0.999192345729932,
+      "gpu_util": 39.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 57.0
+    },
+    {
+      "t": 1792287960.9444788,
+      "cpu_util": 3.8176860148032725,
+      "proc_cpu_cores": 1.037736329841132,
+      "gpu_util": 100.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792287962.0030422,
+      "cpu_util": 3.374474789915966,
+      "proc_cpu_cores": 1.0202505846366856,
+      "gpu_util": 44.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792287963.0536554,
+      "cpu_util": 3.3734620981611325,
+      "proc_cpu_cores": 1.0279711277947041,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792287964.1067758,
+      "cpu_util": 3.0351016099234625,
+      "proc_cpu_cores": 1.0065326105978303,
+      "gpu_util": 84.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792287965.1532931,
+      "cpu_util": 3.399734395750332,
+      "proc_cpu_cores": 1.0224388323538622,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287966.2025218,
+      "cpu_util": 2.9407868591866473,
+      "proc_cpu_cores": 1.0197967634857723,
+      "gpu_util": 96.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792287967.2495468,
+      "cpu_util": 3.6899389434563314,
+      "proc_cpu_cores": 1.0410448997288229,
+      "gpu_util": 49.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792287968.3207731,
+      "cpu_util": 3.008298755186722,
+      "proc_cpu_cores": 1.0175253730818459,
+      "gpu_util": 78.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287969.3696785,
+      "cpu_util": 3.3523254273221146,
+      "proc_cpu_cores": 1.0105773386903956,
+      "gpu_util": 100.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792287970.4200213,
+      "cpu_util": 6.202883216505753,
+      "proc_cpu_cores": 1.0091943333007245,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287971.4708276,
+      "cpu_util": 1.9423890063424947,
+      "proc_cpu_cores": 0.37114357418351596,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792287972.519676,
+      "cpu_util": 0.5034446210916799,
+      "proc_cpu_cores": 0.009534266429553687,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792287973.5707347,
+      "cpu_util": 0.396930404869013,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 57.0
+    },
+    {
+      "t": 1792287974.6715178,
+      "cpu_util": 8.558104360978069,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 56.0
+    },
+    {
+      "t": 1792287975.906828,
+      "cpu_util": 6.0664040517726505,
+      "proc_cpu_cores": 0.8257036176100673,
+      "gpu_util": 100.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 57.0
+    },
+    {
+      "t": 1792287976.9582202,
+      "cpu_util": 4.154538237629002,
+      "proc_cpu_cores": 1.0081869374961763,
+      "gpu_util": 44.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792287978.0163975,
+      "cpu_util": 3.968462549277267,
+      "proc_cpu_cores": 1.0206229793861035,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287979.0657008,
+      "cpu_util": 3.5496688741721854,
+      "proc_cpu_cores": 1.05784476915643,
+      "gpu_util": 80.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287980.12347,
+      "cpu_util": 2.9678266579120156,
+      "proc_cpu_cores": 1.0115627306098336,
+      "gpu_util": 57.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792287981.1747088,
+      "cpu_util": 3.6890122967076557,
+      "proc_cpu_cores": 1.0654097112524608,
+      "gpu_util": 4.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792287982.2510247,
+      "cpu_util": 3.200826019617966,
+      "proc_cpu_cores": 1.0034228986557654,
+      "gpu_util": 98.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1942.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792287983.3158038,
+      "cpu_util": 3.1217345872518285,
+      "proc_cpu_cores": 1.0142949440070275,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287984.3705325,
+      "cpu_util": 3.547408677304497,
+      "proc_cpu_cores": 1.0618843980575348,
+      "gpu_util": 19.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792287985.4224002,
+      "cpu_util": 3.1311930241775663,
+      "proc_cpu_cores": 1.0077312730047783,
+      "gpu_util": 73.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792287986.4928625,
+      "cpu_util": 3.0369889682024658,
+      "proc_cpu_cores": 1.008909957673374,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792287987.56357,
+      "cpu_util": 3.762813027118204,
+      "proc_cpu_cores": 1.0553768766117368,
+      "gpu_util": 22.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287988.6164272,
+      "cpu_util": 2.943894389438944,
+      "proc_cpu_cores": 1.0067842435795469,
+      "gpu_util": 84.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792287989.6705575,
+      "cpu_util": 3.5201054713249835,
+      "proc_cpu_cores": 1.0340277512963718,
+      "gpu_util": 11.0,
+      "gpu_mem_mb": 4841.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792287990.74166,
+      "cpu_util": 3.6988968202465933,
+      "proc_cpu_cores": 1.036315270014904,
+      "gpu_util": 66.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792287991.7930617,
+      "cpu_util": 3.132434575733545,
+      "proc_cpu_cores": 1.0081780213510494,
+      "gpu_util": 66.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792287992.8640583,
+      "cpu_util": 4.450499545867394,
+      "proc_cpu_cores": 1.0550921275977727,
+      "gpu_util": 3.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792287993.916783,
+      "cpu_util": 3.802984286280206,
+      "proc_cpu_cores": 1.0069107913851572,
+      "gpu_util": 83.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792287994.9751508,
+      "cpu_util": 3.190232374950768,
+      "proc_cpu_cores": 1.0109907648279457,
+      "gpu_util": 13.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792287996.0265841,
+      "cpu_util": 2.75095886787462,
+      "proc_cpu_cores": 0.3233681033081206,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287997.072517,
+      "cpu_util": 1.6336830920440961,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792287998.115454,
+      "cpu_util": 1.665556295802798,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792287999.2715652,
+      "cpu_util": 9.584932821497121,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 58.0
+    },
+    {
+      "t": 1792288000.5023398,
+      "cpu_util": 6.089019430637144,
+      "proc_cpu_cores": 0.8774961426651153,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792288001.554623,
+      "cpu_util": 2.9198044655833004,
+      "proc_cpu_cores": 1.0263398250179259,
+      "gpu_util": 98.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1942.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792288002.61154,
+      "cpu_util": 3.194006309148265,
+      "proc_cpu_cores": 1.0029167937429753,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792288003.663602,
+      "cpu_util": 2.9462280354075836,
+      "proc_cpu_cores": 1.007545149555781,
+      "gpu_util": 82.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792288004.7175987,
+      "cpu_util": 4.0079103493737644,
+      "proc_cpu_cores": 1.1005728488760553,
+      "gpu_util": 27.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792288005.803918,
+      "cpu_util": 3.030690537084399,
+      "proc_cpu_cores": 1.0125937125591402,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792288006.8537219,
+      "cpu_util": 3.5633858789243607,
+      "proc_cpu_cores": 1.000186727961535,
+      "gpu_util": 78.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792288007.9064422,
+      "cpu_util": 3.312656724297215,
+      "proc_cpu_cores": 1.0069151242155518,
+      "gpu_util": 42.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288008.9597807,
+      "cpu_util": 4.418942092072286,
+      "proc_cpu_cores": 1.082273143954467,
+      "gpu_util": 7.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792288010.0171704,
+      "cpu_util": 3.1787731511887563,
+      "proc_cpu_cores": 1.0119258428496576,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792288011.0667987,
+      "cpu_util": 2.9520783690759864,
+      "proc_cpu_cores": 1.0098813481553517,
+      "gpu_util": 83.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288012.132488,
+      "cpu_util": 3.0243775257463175,
+      "proc_cpu_cores": 1.0134285615208634,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792288013.1837065,
+      "cpu_util": 4.203013481363997,
+      "proc_cpu_cores": 1.0844557905981322,
+      "gpu_util": 25.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288014.2397604,
+      "cpu_util": 3.0255196001052354,
+      "proc_cpu_cores": 1.0037366683741946,
+      "gpu_util": 81.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1942.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288015.290261,
+      "cpu_util": 3.00304273051991,
+      "proc_cpu_cores": 1.018561977105042,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288016.3422275,
+      "cpu_util": 3.3526927138331573,
+      "proc_cpu_cores": 1.007636718267478,
+      "gpu_util": 82.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288017.3939755,
+      "cpu_util": 9.586864406779661,
+      "proc_cpu_cores": 1.0078459501409,
+      "gpu_util": 29.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288018.4477866,
+      "cpu_util": 3.534687417567924,
+      "proc_cpu_cores": 1.0912772024640756,
+      "gpu_util": 65.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792288019.501178,
+      "cpu_util": 2.903140670361573,
+      "proc_cpu_cores": 1.0062735874252327,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288020.5543897,
+      "cpu_util": 3.0466895278290687,
+      "proc_cpu_cores": 1.0159401107868884,
+      "gpu_util": 83.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288021.601785,
+      "cpu_util": 3.105095541401274,
+      "proc_cpu_cores": 1.0024869033077934,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288022.6526198,
+      "cpu_util": 4.339772426567875,
+      "proc_cpu_cores": 1.0848516796629994,
+      "gpu_util": 17.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288023.708285,
+      "cpu_util": 3.237268061587051,
+      "proc_cpu_cores": 1.0041061741761865,
+      "gpu_util": 84.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288024.757737,
+      "cpu_util": 3.2326444091149975,
+      "proc_cpu_cores": 1.0195799096716944,
+      "gpu_util": 17.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288025.8092175,
+      "cpu_util": 3.5143347866296737,
+      "proc_cpu_cores": 1.008102354775657,
+      "gpu_util": 95.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288026.8792138,
+      "cpu_util": 3.8861450480894204,
+      "proc_cpu_cores": 1.0747700144165797,
+      "gpu_util": 87.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288027.9497778,
+      "cpu_util": 3.1931464174454827,
+      "proc_cpu_cores": 1.0181548864199987,
+      "gpu_util": 13.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288028.9967039,
+      "cpu_util": 3.5155213584505174,
+      "proc_cpu_cores": 1.002936194497732,
+      "gpu_util": 82.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1920.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288030.075872,
+      "cpu_util": 4.8029873808910635,
+      "proc_cpu_cores": 1.0193036831590194,
+      "gpu_util": 46.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792288031.1449518,
+      "cpu_util": 1.289902280130293,
+      "proc_cpu_cores": 0.2712613028501417,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792288032.2045004,
+      "cpu_util": 0.2360655737704918,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792288033.2773795,
+      "cpu_util": 0.3496050757477664,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792288034.371852,
+      "cpu_util": 9.385687143761874,
+      "proc_cpu_cores": 0.0,
+      "gpu_util": 0.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1792.0,
+      "gpu_temp_c": 59.0
+    },
+    {
+      "t": 1792288035.5077279,
+      "cpu_util": 5.456324932713482,
+      "proc_cpu_cores": 0.9772193957066235,
+      "gpu_util": 57.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288036.5546343,
+      "cpu_util": 1.486791450949157,
+      "proc_cpu_cores": 1.0029549237037771,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 60.0
+    },
+    {
+      "t": 1792288037.6065063,
+      "cpu_util": 1.6646848989298455,
+      "proc_cpu_cores": 1.0077271615602563,
+      "gpu_util": 100.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288038.6548085,
+      "cpu_util": 1.9620840514384197,
+      "proc_cpu_cores": 1.0111588306119472,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288039.7014728,
+      "cpu_util": 1.619110816191108,
+      "proc_cpu_cores": 1.0127412034729641,
+      "gpu_util": 81.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288040.7693827,
+      "cpu_util": 1.9921875,
+      "proc_cpu_cores": 1.0113212204399222,
+      "gpu_util": 48.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792288041.8606303,
+      "cpu_util": 2.5337407690348868,
+      "proc_cpu_cores": 1.0904949941271862,
+      "gpu_util": 100.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288042.9102302,
+      "cpu_util": 1.694915254237288,
+      "proc_cpu_cores": 1.009908646331579,
+      "gpu_util": 65.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288043.9754956,
+      "cpu_util": 1.8257694314032342,
+      "proc_cpu_cores": 1.0138318419658372,
+      "gpu_util": 68.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792288045.030412,
+      "cpu_util": 1.6337285902503293,
+      "proc_cpu_cores": 1.0048189773631322,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288046.0771432,
+      "cpu_util": 1.6064790228359,
+      "proc_cpu_cores": 1.0222299341572476,
+      "gpu_util": 69.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288047.126703,
+      "cpu_util": 2.6089259700701892,
+      "proc_cpu_cores": 1.0861696166870456,
+      "gpu_util": 90.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1950.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288048.1780293,
+      "cpu_util": 1.5075376884422111,
+      "proc_cpu_cores": 1.0082502695266828,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 61.0
+    },
+    {
+      "t": 1792288049.228355,
+      "cpu_util": 1.7592592592592593,
+      "proc_cpu_cores": 1.009210827203527,
+      "gpu_util": 81.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1920.0,
+      "gpu_temp_c": 66.0
+    },
+    {
+      "t": 1792288050.2731965,
+      "cpu_util": 1.5826572682537572,
+      "proc_cpu_cores": 1.0145079149859813,
+      "gpu_util": 12.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792288051.3193197,
+      "cpu_util": 1.5932023366967605,
+      "proc_cpu_cores": 1.01326491268094,
+      "gpu_util": 84.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288052.3841612,
+      "cpu_util": 2.6109660574412534,
+      "proc_cpu_cores": 1.0142354434987981,
+      "gpu_util": 49.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288053.4386675,
+      "cpu_util": 1.726637669698168,
+      "proc_cpu_cores": 1.1095239525019822,
+      "gpu_util": 87.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 66.0
+    },
+    {
+      "t": 1792288054.4931169,
+      "cpu_util": 1.977587343441002,
+      "proc_cpu_cores": 0.9957804327284578,
+      "gpu_util": 38.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288055.541656,
+      "cpu_util": 1.9077901430842608,
+      "proc_cpu_cores": 1.020467369366954,
+      "gpu_util": 83.0,
+      "gpu_mem_mb": 4843.0,
+      "gpu_clock_mhz": 1927.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288056.5914927,
+      "cpu_util": 1.9327508604712735,
+      "proc_cpu_cores": 1.0096809008810164,
+      "gpu_util": 22.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792288057.6432385,
+      "cpu_util": 1.6120507399577166,
+      "proc_cpu_cores": 1.00784800634365,
+      "gpu_util": 53.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1927.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288058.6968553,
+      "cpu_util": 2.7440633245382586,
+      "proc_cpu_cores": 1.1294429271977258,
+      "gpu_util": 15.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792288059.757408,
+      "cpu_util": 3.5119905648014678,
+      "proc_cpu_cores": 1.01833704712834,
+      "gpu_util": 81.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288060.8281446,
+      "cpu_util": 1.8698870276587456,
+      "proc_cpu_cores": 1.008651383490726,
+      "gpu_util": 37.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792288061.8822649,
+      "cpu_util": 1.6609543896651726,
+      "proc_cpu_cores": 1.015064407512651,
+      "gpu_util": 84.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1927.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288062.9339242,
+      "cpu_util": 1.8628616726119698,
+      "proc_cpu_cores": 1.0174397293661954,
+      "gpu_util": 25.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792288063.9861827,
+      "cpu_util": 1.8496498876998282,
+      "proc_cpu_cores": 1.0168604089460163,
+      "gpu_util": 13.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792288065.051711,
+      "cpu_util": 2.543035993740219,
+      "proc_cpu_cores": 1.0698917154268848,
+      "gpu_util": 14.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792288066.1000967,
+      "cpu_util": 1.6163222045574988,
+      "proc_cpu_cores": 1.011078347184423,
+      "gpu_util": 100.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 67.0
+    },
+    {
+      "t": 1792288067.1429458,
+      "cpu_util": 1.5327202452352393,
+      "proc_cpu_cores": 1.0068571151611647,
+      "gpu_util": 51.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288068.2283158,
+      "cpu_util": 1.6131097170656765,
+      "proc_cpu_cores": 1.0134792147917562,
+      "gpu_util": 71.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 64.0
+    },
+    {
+      "t": 1792288069.2809534,
+      "cpu_util": 1.768509964365844,
+      "proc_cpu_cores": 1.0164942078086183,
+      "gpu_util": 66.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288070.3476682,
+      "cpu_util": 3.023195204586917,
+      "proc_cpu_cores": 1.0968255431339993,
+      "gpu_util": 2.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 62.0
+    },
+    {
+      "t": 1792288071.3956773,
+      "cpu_util": 1.6308671439936357,
+      "proc_cpu_cores": 1.001899642580014,
+      "gpu_util": 83.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1927.0,
+      "gpu_temp_c": 66.0
+    },
+    {
+      "t": 1792288072.442783,
+      "cpu_util": 1.6469650684021782,
+      "proc_cpu_cores": 1.0027640099456105,
+      "gpu_util": 28.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1912.0,
+      "gpu_temp_c": 63.0
+    },
+    {
+      "t": 1792288073.4940858,
+      "cpu_util": 1.5858332232060262,
+      "proc_cpu_cores": 1.027296923471539,
+      "gpu_util": 82.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 65.0
+    },
+    {
+      "t": 1792288074.542986,
+      "cpu_util": 1.908548707753479,
+      "proc_cpu_cores": 1.0010485961059126,
+      "gpu_util": 22.0,
+      "gpu_mem_mb": 4845.0,
+      "gpu_clock_mhz": 1935.0,
+      "gpu_temp_c": 63.0
+    }
+  ],
+  "max_concurrency_passed": 32,
+  "gpu_after": {
+    "timestamp": "2026/10/18 01:47:55.595",
+    "uuid": "GPU-17003539-7e1c-a01d-d78b-d0f3e20544a0",
+    "name": "NVIDIA GeForce RTX 3060",
+    "driver_version": "595.104.02",
+    "pstate": "P2",
+    "utilization.gpu": "2",
+    "memory.used": "4845",
+    "memory.total": "12288",
+    "power.draw": "87.77",
+    "power.limit": "150.00",
+    "temperature.gpu": "62",
+    "clocks.current.graphics": "1935",
+    "clocks.current.memory": "7301"
+  }
+}

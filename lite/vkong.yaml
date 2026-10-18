@@ -1,0 +1,17 @@
+type: service
+app: zipformer-asr-lite
+app_port: 8000
+
+gpu: RTX-3060-12GB   # same card as phase 1
+num_gpus: 1
+cpu_cores: 8         # the load client runs on this host too
+ram_gb: 16
+disk_gb: 40
+max_dph: 0.35
+verified_only: true
+
+image: pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime
+# model.py downloads the model, audio.py LibriSpeech test-clean.
+init_cmd: pip install -r requirements.txt && python model.py && python audio.py
+# bench.py starts serve.py (POST /server) and the load client (POST /benchmark).
+start: env PROVIDER=cuda python -u bench.py

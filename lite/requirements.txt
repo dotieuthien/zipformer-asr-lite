@@ -1,0 +1,9 @@
+# torch 2.8.0 (CUDA 12.8, cuDNN 9) comes with the image
+onnxruntime-gpu==1.26.0   # the last PyPI build for CUDA 12; 1.27+ needs CUDA 13
+onnx==1.23.2
+numpy==2.2.6
+websockets==17.2
+fastapi==0.120.2
+uvicorn==0.38.0
+pyarrow==26.0.0
+soundfile==0.14.0
