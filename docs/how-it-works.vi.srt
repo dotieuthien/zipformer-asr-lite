@@ -1,0 +1,100 @@
+1
+00:00:00,000 --> 00:00:07,040
+Video này giải thích cách Zipformer chép tiếng nói thành chữ, cách server sherpa-onnx chạy nó, và bản lite làm gì để phục vụ nhiều người hơn.
+
+2
+00:00:07,740 --> 00:00:13,820
+Đây là ASR offline: người dùng nói xong cả câu mới gửi, server trả về chữ của cả câu một lần.
+
+3
+00:00:14,520 --> 00:00:20,840
+Bước một: cứ 10 mili giây lấy một khung âm thanh, đổi thành 80 con số theo dải tần, gọi là fbank.
+
+4
+00:00:21,540 --> 00:00:26,660
+Bước hai: encoder Zipformer đọc cả câu cùng lúc, các tầng bên trong nhìn câu ở nhiều độ chi tiết.
+
+5
+00:00:26,660 --> 00:00:32,820
+Nó ra 25 khung mỗi giây, mỗi khung 512 số. Đây là phần nặng nhất: 64 triệu tham số.
+
+6
+00:00:33,520 --> 00:00:39,520
+Bước ba: greedy search đi qua từng khung. Joiner ghép khung với 2 token vừa viết, chọn token điểm cao nhất.
+
+7
+00:00:39,520 --> 00:00:45,040
+Phần lớn khung ra blank, tức chưa có chữ mới. Mỗi khung tối đa một token, ghép lại thành câu.
+
+8
+00:00:45,740 --> 00:00:51,420
+Server sherpa-onnx xếp câu vào một hàng đợi chung. Ba luồng làm việc, mỗi luồng lấy tối đa 5 câu.
+
+9
+00:00:51,420 --> 00:00:57,580
+Mỗi batch: fbank trên CPU, rồi encoder chạy một lần trên GPU, đệm mọi câu bằng câu dài nhất.
+
+10
+00:00:58,280 --> 00:01:03,160
+Greedy chạy tới hết câu dài nhất, cả batch xong mới trả, nên câu ngắn phải chờ câu dài.
+
+11
+00:01:03,160 --> 00:01:08,440
+Mỗi khung, dữ liệu lại chép qua lại giữa CPU và GPU, nên GPU thường đứng chờ.
+
+12
+00:01:09,140 --> 00:01:15,140
+Kịch bản đo: N người bấm gửi cùng một lúc. Đo xem chờ bao lâu mới có chữ; P90 dưới 1 giây thì đạt.
+
+13
+00:01:15,140 --> 00:01:19,780
+Mỗi mức gửi 5 lượt như vậy, rồi tăng N, tới khi P90 vượt 1 giây.
+
+14
+00:01:20,480 --> 00:01:27,920
+Server gốc trên một RTX 3060: giữ P90 dưới 1 giây, phục vụ được 24 người gửi cùng một lúc.
+
+15
+00:01:28,620 --> 00:01:35,660
+Bản lite có 32 slot. Câu mới được gom thành nhóm tới 16 câu, chạy fbank và encoder trên GPU đúng một lần.
+
+16
+00:01:36,360 --> 00:01:42,520
+Ở server gốc, mỗi khung CPU phải gọi GPU rồi chờ kết quả về. Câu 10 giây là 250 lượt như vậy.
+
+17
+00:01:42,520 --> 00:01:48,680
+Bản lite chạy greedy hẳn trên GPU: 8 bước ghi thành một CUDA graph, một lệnh là cả 32 slot đi 8 khung.
+
+18
+00:01:49,380 --> 00:01:55,300
+Slot nào xong là trả chữ ngay, slot trống nhận câu mới ở tick sau. Câu ngắn không phải chờ câu dài.
+
+19
+00:01:55,300 --> 00:02:00,740
+Encoder chạy ở luồng riêng: trong lúc nhóm sau đang prefill, greedy của các slot vẫn chạy tiếp.
+
+20
+00:02:01,440 --> 00:02:07,280
+Câu 10 giây, giữ P90 dưới 1 giây: server gốc phục vụ 24 người, bản lite 64 người.
+
+21
+00:02:07,280 --> 00:02:13,040
+Câu dài ngắn lẫn lộn: 16 lên 64 người. Trần xử lý gần gấp đôi, và chữ giống hệt server gốc.
+
+22
+00:02:13,740 --> 00:02:20,460
+Còn VRAM: server gốc tăng bộ nhớ theo batch lớn nhất từng gặp, lên tới 6,6 GB, không có trần.
+
+23
+00:02:20,460 --> 00:02:26,620
+Bản lite chặn lượt prefill lớn nhất ở 16 câu và 240 giây audio, rồi chạy thử nó ngay lúc khởi động.
+
+24
+00:02:26,620 --> 00:02:34,380
+Khi độ dài câu thay đổi liên tục, bộ nhớ bị phân mảnh. Vượt ngưỡng thì onnxruntime trả vùng trống, VRAM tụt về 1,4 GB.
+
+25
+00:02:35,080 --> 00:02:41,720
+Tóm lại: cùng model, cùng loại GPU. Chỉ đổi cách server chạy, số người gửi cùng lúc tăng từ 24 lên 64.
+

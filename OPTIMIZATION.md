@@ -439,7 +439,8 @@ Thêm `&vram_release_gb=7.4` vào chuỗi cờ để bật nhả VRAM như bư�
   xong bằng `vkong app stop zipformer-asr-lite --yes`.
 - **`init failed (exit -1): deploy Run superseded during init`** có thể hiện ra ngay sau `vkong run --detach`, trong khi
   `vkong instances` vẫn báo máy `running`. Chạy `vkong attach <id> -C lite --setup` để cài lại và chạy workload. Trong lúc
-  đó, `attach` thường báo `user session auth failed: EOF`.
+  đó, `attach` thường báo `user session auth failed: EOF`. Nếu `--setup` cũng bị "superseded" hay kẹt `queued`, trả máy
+  rồi chạy lại `vkong run` không có `--detach`, để chạy nền và chờ dòng `Workload running · http://127.0.0.1:PORT`.
 - **Tunnel hay đứt** trong khi máy vẫn chạy. `keep_tunnel.sh` tự nối lại và ghi địa chỉ mới vào file; `run_suite.sh` đọc
   file đó ở mỗi lệnh. Mọi phép đo chạy trên máy GPU, nên tunnel đứt không làm sai số đo.
 - **Sửa code thì dùng `vkong attach <id> -C lite --update`,** không cần thuê lại. Lệnh này đẩy code lên và chạy lại

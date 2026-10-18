@@ -28,6 +28,13 @@ Chi tiết: [PHASE1.md](PHASE1.md).
 
 Chi tiết: [OPTIMIZATION.md](OPTIMIZATION.md).
 
+| Video 2 phút 40: Zipformer và sherpa-onnx hoạt động thế nào, rồi bản lite làm gì khi nhiều người gửi cùng lúc |
+|---|
+| [![Video giải thích Zipformer, sherpa-onnx và bản lite](docs/how-it-works.png)](docs/how-it-works.mp4) |
+
+*Giọng đọc do [VieNeu-TTS lite](https://github.com/dotieuthien/vieneu-tts-lite) tạo. Phụ đề tiếng Việt vẽ sẵn trong hình, kèm file
+[.srt](docs/how-it-works.vi.srt). Token trong cảnh greedy search là token thật mà model ra cho một câu của LibriSpeech.*
+
 ## Kết quả
 
 Bản lite so với server C++ gốc của sherpa, model Zipformer gốc tiếng Anh, một RTX 3060 12 GB:
@@ -39,12 +46,43 @@ Bản lite so với server C++ gốc của sherpa, model Zipformer gốc tiếng
 | Rải đều, câu ~10 s | 128 | **768** | 515 | **916** |
 | Rải đều, câu 1.4–33 s | 64 | **320** | 112 | **394** |
 
-- **Dồn một lúc:** N người gửi một câu đúng cùng một lúc. **Rải đều:** N người nói không nghỉ, câu nào xong gửi ngay, nên
-  request đến rải rác, khoảng N chia độ dài câu mỗi giây.
+- **Dồn một lúc:** N người gửi một câu đúng cùng một lúc. Giống đỉnh tải đột ngột, nhiều người bấm "chép lời" cùng lúc.
+- **Rải đều:** N người nói không nghỉ, câu nào xong gửi ngay, nên request đến rải rác, khoảng N chia độ dài câu mỗi giây.
+  Kịch bản này mô phỏng luồng của voice bot có VAD (xem ngay dưới).
 - **Thời gian chờ:** tới khi có chữ. ASR offline trả cả câu một lần, nên đây cũng là thời gian tới chữ đầu tiên.
 - **Trần xử lý:** số giây audio chép ra chữ trong một giây khi server đã hết sức.
 - **Một câu ~10 s chạy một mình:** sherpa 0.135 s, lite 0.076 s.
 - **Chữ không đổi:** 355/355 câu của lite giống hệt sherpa; WER ~2.2%, không đổi khi tải nặng.
+
+### Kịch bản rải đều mô phỏng voice bot có VAD
+
+Trong voice bot, VAD nghe người dùng nói và cắt lời thành từng câu ở chỗ họ ngừng. Model ở đây là ASR offline, nên chỉ
+chép được khi cả câu đã xong. Vì vậy, **trong lúc một người đang nói, server không có gì để làm cho người đó**. Nó chỉ
+làm việc khoảng 0.1 s sau khi câu kết thúc:
+
+```
+người A   ──────── đang nói câu 1 (10 s) ────────┤ VAD cắt, gửi câu 1 ──────── đang nói câu 2 ────────┤ gửi
+server    (chưa có gì của A, đang làm cho người khác) [chép câu 1 của A ~0.1 s]   (lại rảnh với A)      [chép câu 2]
+```
+
+Mỗi người nói xong vào một lúc khác nhau, nên khoảng trống của người này được lấp bằng câu của người khác:
+
+```
+thời gian   0 s ─────── 3 s ─────── 6 s ─────── 10 s ────── 13 s ────── 16 s ────── 20 s
+người A     ──────── nói câu 1 ────────────────────┤gửi ─────── nói câu 2 ──────────────┤gửi
+người B     ─── nói câu 1 ───┤gửi ─────── nói câu 2 ─────────────┤gửi ─────── nói câu 3 ...
+người C     ──────────── nói câu 1 ─────────┤gửi ─────── nói câu 2 ─────────────┤gửi ...
+server          chép B ↑          chép C ↑       chép A ↑   chép B ↑        chép C ↑     chép A ↑
+```
+
+- **N người nói cùng lúc thì cứ khoảng 10/N giây lại có một câu đến** (với câu ~10 s). Ví dụ 320 người là ~31 ms một câu,
+  768 người là ~13 ms một câu. Server luôn bận, nhưng với câu của những người khác nhau.
+- **Thời gian chờ đo từ lúc câu nói xong** (lúc VAD cắt) tới lúc có chữ, gồm cả thời gian xếp hàng. Đây là độ trễ người
+  dùng thấy trước khi bot bắt đầu trả lời.
+- **Người dùng ở đây nói liền không nghỉ,** tức mức tải nặng nhất. Người thật có lúc im lặng, lúc nghe bot nói, nên với
+  cùng N người thì số câu mỗi giây ít hơn, và server chịu được nhiều người hơn bảng trên.
+- Muốn server chép ngay trong lúc người dùng đang nói (chữ hiện dần) thì cần model streaming (Zipformer online), không
+  phải bản offline đang đo.
 
 Server gốc của sherpa hoạt động thế nào và vì sao sức chứa dừng ở đó: [PHASE1.md](PHASE1.md). Lite làm gì khác, từng
 bước tối ưu và cách đo: [OPTIMIZATION.md](OPTIMIZATION.md).
@@ -90,4 +128,5 @@ cho sherpa, [OPTIMIZATION.md](OPTIMIZATION.md#bước-8-bench-cuối-so-với-sh
 | [lite/serve.py](lite/serve.py) | Server websocket của bản lite, cùng giao thức với sherpa |
 | [lite/zipformer_lite/](lite/zipformer_lite/) | Slot, luồng prefill và luồng greedy, cửa sổ cho audio dài, nhả VRAM |
 | [lite/results/](lite/results/) | Số đo thô của giai đoạn 2: `gpu-20261018` (bước 3–5), `gpu-20261018b` (bước 6–8) |
+| [docs/](docs/) | Video giải thích, phụ đề, và [script dựng video](docs/video/make_video.py) |
 | [experiments/lite/](experiments/lite/) | Chạy cả bộ cho lite, giữ tunnel, tải kết quả, tính bảng so với sherpa |
